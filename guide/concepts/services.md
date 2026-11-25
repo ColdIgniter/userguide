@@ -1,6 +1,179 @@
 # Services
 
-The services that give you shared objects, and how to replace one.
+## Introduction
 
-!!! note "Not written yet"
-    This page is not written yet.
+### What are Services?
+
+The **Services** in ColdIgniter provide the functionality to create and share new class instances. They are implemented as the component `Config\Services` (the file **app/Config/Services.cfc**), which extends the framework's `ColdIgniter\Config\Services` (**system/Config/Services.cfc**).
+
+All of the core classes within ColdIgniter are provided as "services". This simply means that, instead of hard-coding a class name to load, the classes to call are defined within a very simple configuration file. This file acts as a type of factory to create new instances of the required class.
+
+### Why use Services?
+
+A quick example will probably make things clearer, so imagine that you need to pull in an instance of the Timer class. The simplest method would simply be to create a new instance of that class:
+
+```cfm
+<cfset timer = new_("ColdIgniter\Debug\Timer")>
+```
+
+And this works great. Until you decide that you want to use a different timer class in its place. Maybe this one has some advanced reporting the default timer does not provide. In order to do this, you now have to locate all of the locations in your application that you have used the timer class. Since you might have left them in place to keep a performance log of your application constantly running, this might be a time-consuming and error-prone way to handle this. That's where services come in handy.
+
+Instead of creating the instance ourself, we let a central component create an instance of the class for us. This component is kept very simple. It only contains a function for each class that we want to use as a service. The function typically returns a **shared instance** of that class, passing any dependencies it might have into it. Then, we would replace our timer creation code with code that calls this global function or the Services component:
+
+```cfm
+<cfset timer = service("timer")>
+
+<!--- the same, written in full --->
+<cfset timer = static_("Config\Services").timer()>
+```
+
+When you need to change the implementation used, you can modify the services configuration file, and the change happens automatically throughout your application without you having to do anything. Now you just need to take advantage of any new functionality and you're good to go. Very simple and error-resistant.
+
+!!! note
+    It is recommended to only create services within controllers. Other files, like models and libraries, should have the dependencies either passed into the constructor or through a setter function.
+
+## How to Get a Service
+
+As many ColdIgniter classes are provided as services, you can get them like the following:
+
+```cfm
+<cfset timer = service("timer")>
+```
+
+The `timer` is an instance of the Timer class, and if you call `service("timer")` again, you will get exactly the same instance.
+
+The Services typically return a **shared instance** of the class. A second call with other parameters returns the same instance, and the new parameters are ignored.
+
+The services that exist are: `autoloader`, `cache`, `coldigniter`, `csp`, `encrypter`, `exceptions`, `filters`, `format`, `honeypot`, `incomingrequest`, `language`, `logger`, `migrations`, `negotiator`, `pager`, `parser`, `redirectresponse`, `renderer`, `request`, `response`, `responsecache`, `router`, `routes`, `security`, `session`, `siteurifactory`, `superglobals`, `timer`, `toolbar`, `uri` and `validation`.
+
+!!! warning "Not ported yet"
+    Every service of CodeIgniter that is not in that list is not ported yet. The file `Config/Services.php` of CodeIgniter holds the full list (for example `curlrequest`, `email`, `image`, `throttler`, `typography`, `clirequest` and `locator`).
+
+!!! note "Difference from CodeIgniter"
+    A service name that does not exist gives an empty string. Service names are not case sensitive.
+
+### Getting a New Instance
+
+If you want to get a new instance of the Timer class, you need to pass `false` to the argument `getShared`:
+
+```cfm
+<cfset timer = static_("Config\Services").timer(false)>
+```
+
+### Convenience Functions
+
+#### service()
+
+`service()` returns the shared instance of the requested service. The only required parameter is the service name. This is the same as the function name within the Services component, and always returns a SHARED instance of the class, so calling the function multiple times returns the same instance:
+
+```cfm
+<cfset logger = service("logger")>
+```
+
+If the creation function requires additional parameters, they can be passed after the service name:
+
+```cfm
+<cfset renderer = service("renderer", "/path/to/views")>
+```
+
+#### single_service()
+
+!!! warning "Not ported yet"
+    The global function `single_service()` does not exist. To get a new instance, call the function of `static_("Config\Services")` with `false` as the `getShared` argument, as shown above.
+
+## Defining Services
+
+To make services work well, you have to be able to rely on each class having a constant API to use. When you want to extend or replace core classes, you only need to keep the functions the framework calls.
+
+!!! note "Difference from CodeIgniter"
+    ColdFusion MX 6.1 has no interfaces. A replacement class extends the class it replaces, or provides the same functions.
+
+For example, to replace the `RouteCollection` class, create a component with the new behavior:
+
+```cfm
+<cfcomponent output="no" parent="ColdIgniter\Router\RouteCollection">
+    <!--- your changes here --->
+</cfcomponent>
+```
+
+Finally, add the `routes()` function to **app/Config/Services.cfc** to create a new instance of it instead of `ColdIgniter\Router\RouteCollection`:
+
+```cfm
+<cfcomponent output="no" parent="ColdIgniter\Config\Services" hint="Services Configuration file">
+
+    <cffunction name="routes" access="public" returntype="any" output="no">
+        <cfargument name="getShared" type="boolean" required="no" default="true">
+
+        <cfif arguments.getShared>
+            <cfreturn getSharedInstance("routes")>
+        </cfif>
+
+        <cfreturn new_("App\Libraries\MyRouteCollection")>
+    </cffunction>
+
+</cfcomponent>
+```
+
+The function in your file replaces the function of the same name in the framework's file. Take the arguments of the original function from **system/Config/Services.cfc**.
+
+### Allowing Parameters
+
+In some instances, you will want the option to pass a setting to the class during instantiation. Since the services file is a very simple component, it is easy to make this work.
+
+A good example is the `renderer` service. By default, we want this class to be able to find the views at the view directory of **app/Config/Paths.cfc**. We want the developer to have the option of changing that path, though, if their needs require it. So the class accepts the view path as a constructor parameter. The service function looks like this (shortened):
+
+```cfm
+<cffunction name="renderer" access="public" returntype="any" output="no">
+    <cfargument name="viewPath" type="string" required="no" default="">
+    <cfargument name="config" type="any" required="no" default="">
+    <cfargument name="getShared" type="boolean" required="no" default="true">
+
+    <cfif arguments.getShared>
+        <cfreturn getSharedInstance("renderer", arguments.viewPath, arguments.config)>
+    </cfif>
+
+    <cfif arguments.viewPath EQ "" OR arguments.viewPath EQ "0">
+        <cfset arguments.viewPath = new_("Config\Paths").viewDirectory>
+    </cfif>
+    <cfif is_null(arguments.config)>
+        <cfset arguments.config = variables.config("Config\View")>
+    </cfif>
+
+    <cfreturn new_("ColdIgniter\View\View", arguments.config, arguments.viewPath, "", request.CI_DEBUG, static_("Config\Services").get("logger"))>
+</cffunction>
+```
+
+This sets the default path in the constructor, but allows for easily changing the path it uses:
+
+```cfm
+<cfset renderer = static_("Config\Services").renderer("/path/to/views", "", false)>
+```
+
+!!! note "Difference from CodeIgniter"
+    An argument that is left out has an empty string as its value, and the framework treats an empty string as "no value" (`is_null()`).
+
+### Shared Classes
+
+There are occasions where you need to require that only a single instance of a service is created. This is easily handled with the `getSharedInstance()` function that is called from within the factory function. This handles checking if an instance has been created and saved within the component, and, if not, creates a new one. All of the factory functions provide a `getShared = true` value as the last parameter. You should stick to the function also:
+
+```cfm
+<cffunction name="example" access="public" returntype="any" output="no">
+    <cfargument name="getShared" type="boolean" required="no" default="true">
+
+    <cfif arguments.getShared>
+        <cfreturn getSharedInstance("example")>
+    </cfif>
+
+    <cfreturn new_("App\Libraries\Example")>
+</cffunction>
+```
+
+## Service Discovery
+
+!!! warning "Not ported yet"
+    ColdIgniter does not search the namespaces for **Config/Services.cfc** files of modules. Only **app/Config/Services.cfc** is used. Put the services of a module in that file.
+
+### Resetting Services Cache
+
+!!! warning "Not ported yet"
+    `resetServicesCache()` does not exist, because the services of modules are not discovered.
