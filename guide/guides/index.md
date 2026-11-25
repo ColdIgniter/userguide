@@ -8,3 +8,4 @@ The project based guides that help you get started.
 ## In this section
 
 - [Build Your First Application](first-app/index.md)
+- [Getting Started with REST APIs](api/index.md)
