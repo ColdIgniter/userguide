@@ -111,7 +111,7 @@ Example:
 - `str` (string, array or struct): the input string, or an array of strings.
 - Returns the string or strings with stripped slashes.
 
-Removes any slashes from an array of strings.
+Removes any slashes from a string, or from every string in an array or a struct.
 
 Example:
 
@@ -123,7 +123,7 @@ Example:
 <cfset str = strip_slashes(str)>
 ```
 
-The above returns an array with these values:
+The above returns a struct with these values:
 
 | Key | Value |
 | --- | --- |
@@ -369,7 +369,7 @@ Excessively long words are split, but URLs are not.
 - `str` (string): the input string.
 - `maxLength` (numeric): the string length limit.
 - `position` (numeric, optional, default `1`): the position to split at, from 0 to 1.
-- `ellipsis` (string, optional, default `&amp;hellip;`): what to use as the ellipsis character.
+- `ellipsis` (string, optional, default `&hellip;`): what to use as the ellipsis character.
 - Returns the ellipsized string.
 
 This function strips tags from a string, splits it at a defined maximum length, and inserts an ellipsis.
@@ -390,9 +390,6 @@ Produces:
 ```html
 this_string_is_e&hellip;ak_my_design.jpg
 ```
-
-!!! note "Difference from CodeIgniter"
-    The default of `ellipsis` is the text `&amp;hellip;`, where CodeIgniter has `&hellip;`. Pass `&hellip;` as the fourth parameter, as in the example, to get the ellipsis character in a web page.
 
 ### excerpt()
 

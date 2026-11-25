@@ -73,7 +73,7 @@ Example:
 Generates a src-ready string from an image using the `data:` protocol. Example:
 
 ```cfm
-<cfset src = img_data(ExpandPath("images/picture.jpg"))> <!--- data:image/jpg;base64,R0lGODl... --->
+<cfset src = img_data(ExpandPath("images/picture.gif"))> <!--- data:image/gif;base64,R0lGODl... --->
 
 <cfoutput>#img(src)#</cfoutput>
 ```
@@ -309,7 +309,7 @@ The above code produces this:
 - `indexPage` (boolean, optional, default `false`): whether `indexPage` is added to the audio source path.
 - Returns an HTML audio element.
 
-Identical to [`video()`](#video), only it produces an `<audio>` element instead of `<video>`.
+Works like [`video()`](#video), only it produces an `<audio>` element instead of `<video>`. With a single source string, the line breaks of the output differ a little: there is no line break after the opening tag when you give no tracks and no message.
 
 ### source()
 

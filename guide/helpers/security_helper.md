@@ -29,7 +29,7 @@ Backslashes are always removed. If `relativePath` is `true`, forward slashes are
 !!! note
     When you pass relative paths to this helper, use forward slashes (`/`) as directory separators, on Windows too.
 
-For more information, see the [Security Library](../libraries/security.md) page.
+For more information, see the Security library. Its page is not written yet.
 
 ### strip_image_tags()
 

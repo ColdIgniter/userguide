@@ -181,4 +181,4 @@ Turns a number into an ordinal string used to denote the position, such as 1st, 
 ```
 
 !!! note "Difference from CodeIgniter"
-    Where these functions change a string to lower case, letters outside ASCII (such as `É`) are changed too. CodeIgniter changes only the letters A to Z there.
+    `decamelize()` also changes letters outside ASCII (such as `É`) to lower case. CodeIgniter changes only the letters A to Z there.

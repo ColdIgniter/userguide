@@ -48,7 +48,7 @@ The following functions are available:
 - `hidden` (struct, optional): a map of hidden field names and values.
 - Returns an HTML form opening tag.
 
-Creates an opening form tag with a site URL **built from your** `app/Config/App.cfc` **file**. You can add form attributes and hidden input fields. The function always adds the `accept-charset` attribute, with the value of the `charset` property in your `app/Config/App.cfc` file, and `method="post"` if you give no method.
+Creates an opening form tag with a site URL **built from your** `app/Config/App.cfc` **file**. You can add form attributes and hidden input fields. If you give no `accept-charset` attribute, the function adds it with the value of the `charset` property in your `app/Config/App.cfc` file. If you give no method, it adds `method="post"`.
 
 The main benefit of using this function, and not writing the HTML yourself, is that your site is more portable in the event your URLs ever change.
 
@@ -117,7 +117,7 @@ It returns:
 ```
 
 !!! note
-    To use the automatic CSRF field, you need to turn the CSRF filter on in the `app/Config/Filters.cfc` file. See [Controller Filters](../incoming/filters.md) and [Security](../libraries/security.md). The field is left out when the form uses the GET method and when the form points to another site.
+    To use the automatic CSRF field, you need to turn the CSRF filter on in the `app/Config/Filters.cfc` file. See [Controller Filters](../incoming/filters.md). The page of the Security library is not written yet. The field is left out when the form uses the GET method and when the form points to another site.
 
 **Adding Hidden Input Fields**
 
@@ -141,7 +141,7 @@ The above example creates a form similar to this:
 ```
 
 !!! note "Difference from CodeIgniter"
-    A CFML struct has no order. Where you pass a struct to a function on this page, the attributes, hidden fields or options can come out in an order other than the one you set them in. The keys of a struct are case sensitive here: write them with bracket notation and in lower case, such as `data["name"]`.
+    A CFML struct has no order. Where you pass a struct to a function on this page, the attributes, hidden fields or options can come out in an order other than the one you set them in. The functions look for keys such as `name` and `value` in lower case, and dot notation stores a key in upper case. So write the keys with bracket notation and in lower case, such as `data["name"]`.
 
 ### form_open_multipart()
 
@@ -280,7 +280,7 @@ If you want boolean attributes, pass a boolean value (`true` or `false`). In thi
 Would produce:
 
 ```html
-<input type="text" name="username" value="" id="username" required>
+<input type="text" name="username" value="" id="username" required >
 ```
 
 !!! note "Difference from CodeIgniter"
@@ -535,7 +535,7 @@ Similar to the other form functions in this helper, you can also pass a map of a
 Would produce:
 
 ```html
-<input type="checkbox" name="newsletter" value="accept" id="newsletter" checked="checked" style="margin:10px">
+<input type="checkbox" name="newsletter" value="accept" checked="checked" id="newsletter" style="margin:10px">
 ```
 
 Also as with other functions, if you would like the tag to contain additional data like JavaScript, you can pass it as a string in the fourth parameter:
@@ -785,7 +785,7 @@ Example:
 
 Returns the validation errors. First, this function checks the validation errors that are stored in the session. To store the errors in the session, you need to use `withInput()` with [`redirect()`](../general/common_functions.md#redirect).
 
-The returned map is the same as the one of the `getErrors()` method of the [Validation](../libraries/validation.md) library.
+The returned map is the same as the one of the `getErrors()` method of the Validation library.
 
 Example:
 
@@ -802,7 +802,7 @@ Example:
 
 Returns the rendered HTML of the validation errors.
 
-The parameter `template` is a validation template name. See the [Validation](../libraries/validation.md) library for the templates.
+The parameter `template` is a validation template name. The templates belong to the Validation library, whose page is not written yet.
 
 This function uses [`validation_errors()`](#validation_errors) internally.
 
@@ -822,7 +822,7 @@ Example:
 
 Returns a single error for the specified field in formatted HTML.
 
-The parameter `template` is a validation template name. See the [Validation](../libraries/validation.md) library for the templates.
+The parameter `template` is a validation template name. The templates belong to the Validation library, whose page is not written yet.
 
 This function uses [`validation_errors()`](#validation_errors) internally.
 

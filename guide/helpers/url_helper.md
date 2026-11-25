@@ -446,8 +446,21 @@ This is useful because you can still change your routes after putting links into
 
 If no route is found, a `RouterException` is thrown.
 
-!!! warning "Not ported yet"
-    In CodeIgniter, when you use `{locale}` in your route, you can give the locale value as the last parameter. That is not ported yet.
+When you use `{locale}` in your route, you can optionally specify the locale value as the last parameter:
+
+```cfm
+<!--- The route is defined as: --->
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["as"] = "user_gallery">
+<cfset routes.add("{locale}/users/(:num)/gallery/(:num)", "Galleries::showUserGallery/$1/$2", routeOptions)>
+```
+
+```cfm
+<a href="<cfoutput>#url_to("user_gallery", 15, 12, "en")#</cfoutput>">View Gallery</a>
+<!--- Result: 'http://example.com/index.cfm/en/users/15/gallery/12' --->
+```
+
+If you leave the locale out, or give one that is not in `supportedLocales` of `app/Config/App.cfc`, the locale of the current request is used.
 
 For full details, see [Reverse Routing](../incoming/routing.md#reverse-routing) and [Named Routes](../incoming/routing.md#named-routes).
 

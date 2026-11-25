@@ -18,7 +18,7 @@ The following functions are available:
 
 `set_cookie(name, value, expire, domain, path, prefix, secure, httpOnly, sameSite)`
 
-- `name` (string): the cookie name.
+- `name` (string, struct or Cookie object): the cookie name, or a map of all the parameters listed here, or a Cookie object.
 - `value` (string, optional, default `""`): the cookie value.
 - `expire` (numeric, optional, default `0`): the number of seconds until the cookie expires. If set to `0` the cookie lasts only as long as the browser is open.
 - `domain` (string, optional, default `""`): the cookie domain (usually: `.yourdomain.com`).
@@ -41,8 +41,20 @@ This helper function gives you friendlier syntax to set browser cookies. Refer t
 !!! note "Difference from CodeIgniter"
     CodeIgniter takes `null` for `secure`, `httpOnly` and `sameSite` to ask for the default. CFML has no null, so an empty string stands for it.
 
+The first parameter can also be a map that holds all the parameters, or a Cookie object. The keys of the map are `name`, `value`, `expire`, `domain`, `path`, `prefix`, `secure`, `httponly` and `samesite`, all in lower case:
+
+```cfm
+<cfset data = StructNew()>
+<cfset data["name"] = "remember">
+<cfset data["value"] = "yes">
+<cfset data["expire"] = request.HOUR>
+<cfset data["httponly"] = true>
+
+<cfset set_cookie(data)>
+```
+
 !!! warning "Not ported yet"
-    The first argument must be the cookie name. A map of all the parameters or a Cookie object as the first argument is not ported yet.
+    `expire` must be a number of seconds. An expiry given as a date object is not ported yet: the cookie then lasts only as long as the browser is open.
 
 ### get_cookie()
 
