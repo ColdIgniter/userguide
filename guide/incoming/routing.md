@@ -6,10 +6,12 @@ How to map an address to a controller and a method.
 
 URI Routing connects a URI to the method of a controller.
 
-ColdIgniter has one kind of routing, **Defined Route Routing**. You define the routes yourself, which allows flexible URLs.
+ColdIgniter has two kinds of routing. One is **Defined Route Routing**, and the other is **Auto Routing**. With Defined Route Routing, you define the routes yourself, which allows flexible URLs. Auto Routing routes HTTP requests from conventions and runs the matching controller method, so there is no need to define routes by hand.
+
+First, let's look at Defined Route Routing. If you want to use Auto Routing, see [Auto Routing (Improved)](auto_routing_improved.md).
 
 !!! note "Difference from CodeIgniter"
-    CodeIgniter also has Auto Routing, which runs controller methods from conventions without route definitions. ColdIgniter does not have it. A URI that matches no route gives a "page not found" error.
+    ColdIgniter has only Auto Routing (Improved). Auto Routing (Legacy) is not ported.
 
 ## Setting Routing Rules
 
@@ -271,7 +273,7 @@ You can change what a route does by giving it filters that run before or after t
 The value of `filter` is a string or an array of strings. Each one is the alias of a filter defined in `app/Config/Filters.cfc`, or the class name of a filter. See [Controller Filters](filters.md) for how to define aliases.
 
 !!! note
-    ColdIgniter has no auto routing, so a controller can only be reached by the routes you define. A filter on a route is always applied.
+    A filter on a route is applied whenever the route matches. A controller reached by [Auto Routing (Improved)](auto_routing_improved.md) has no route, so set its filters in `app/Config/Filters.cfc`.
 
 #### Alias Filter
 
@@ -360,13 +362,42 @@ The new namespace is only used for that call.
 
 ## Reverse Routing
 
-!!! warning "Not ported yet"
-    There is no function that makes a URI from a route, such as `route_to()`.
+Reverse routing lets you name the controller and method, and any parameters, that a link should go to, and have the router look up the route for it. This lets route definitions change without changes in your application code. It is typically used in views to make links.
+
+For example, if you have a route to a photo gallery that you want to link to, use the `url_to()` function to get the route that should be used. The first argument is the fully qualified controller and method, separated by a double colon (`::`), as when you write the route itself. Any parameters that should be passed to the route come next:
+
+```cfm
+<!--- the route is defined as: --->
+<cfset routes.get("users/(:num)/gallery/(:num)", "Galleries::showUserGallery/$1/$2")>
+
+<!--- generate the URI to link to user ID 15, gallery 12: --->
+<cfoutput><a href="#url_to("Galleries::showUserGallery", 15, 12)#">View Gallery</a></cfoutput>
+<!--- result: http://example.com/users/15/gallery/12 --->
+```
+
+`route_to()` gives the same route as a path relative to the base URL. See [route_to()](../general/common_functions.md#route_to).
 
 ## Named Routes
 
-!!! warning "Not ported yet"
-    A route can be given a name with the `as` option, but the name cannot be used to find the route yet.
+You can name routes to make your application less fragile. A name is applied to a route and can be used later, so even if the route definition changes, all the links in your application made with `url_to()` still work with no change. A route is named with the `as` option:
+
+```cfm
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["as"] = "user_gallery">
+<cfset routes.get("users/(:num)/gallery/(:num)", "Galleries::showUserGallery/$1/$2", routeOptions)>
+
+<!--- generate the URI to link to user ID 15, gallery 12: --->
+<cfoutput><a href="#url_to("user_gallery", 15, 12)#">View Gallery</a></cfoutput>
+<!--- result: http://example.com/users/15/gallery/12 --->
+```
+
+This also makes the views easier to read.
+
+!!! note
+    By default, all defined routes have names that match their paths, with placeholders replaced by their regular expressions. For example, if you define the route `routes.get("edit/(:num)", "PostController::edit/$1")`, you can make the URL with `route_to("edit/([0-9]+)", 12)`.
+
+!!! warning
+    A route that is defined first without a name (for example `routes.get("edit", "PostController::edit")`) takes the name `edit`. If you then define a named route with the same name as that path (for example `routes.get("edit/(:num)", "PostController::edit/$1", routeOptions)` with `as` set to `edit`), the second route is not registered, because its name conflicts with the name given to the first.
 
 ## Grouping Routes
 
@@ -443,9 +474,17 @@ This option replaces dashes (`-`) with underscores in the method name taken from
 <cfset this.translateURIDashes = true>
 ```
 
+With Auto Routing (Improved), see [Translate URI To CamelCase](auto_routing_improved.md#translate-uri-to-camelcase), which takes the place of this option.
+
 ### Use Defined Routes Only
 
-ColdIgniter always uses defined routes only. The option `autoRoute` is in `app/Config/Routing.cfc`, but a URI that matches no route gives a "page not found" error, whatever its value.
+The `autoRoute` option in `app/Config/Routing.cfc` is `false` by default, so auto routing is off.
+
+When no defined route matches the URI, the system tries to match the URI against the controllers and methods if Auto Routing is on. You can turn this matching off, and keep to the routes you define, by setting the `autoRoute` property to `false`:
+
+```cfm
+<cfset this.autoRoute = false>
+```
 
 !!! warning
     CSRF protection does not protect GET requests. If a URI can be reached with GET, CSRF protection does not work.
@@ -481,48 +520,49 @@ Give the full class name. The default namespace is not added to this value. The 
 
 ## Auto Routing (Improved)
 
-!!! warning "Not ported yet"
-    ColdIgniter has no automatic routing.
+Auto Routing (Improved) is a more secure automatic routing system.
+
+See [Auto Routing (Improved)](auto_routing_improved.md) for details.
 
 ## Auto Routing (Legacy)
 
 !!! warning "Not ported yet"
-    ColdIgniter has no automatic routing.
+    Auto Routing (Legacy) is not ported. ColdIgniter has only [Auto Routing (Improved)](auto_routing_improved.md).
 
 ### Enable Auto Routing (Legacy)
 
 !!! warning "Not ported yet"
-    ColdIgniter has no automatic routing.
+    Auto Routing (Legacy) is not ported. ColdIgniter has only [Auto Routing (Improved)](auto_routing_improved.md).
 
 ### URI Segments (Legacy)
 
 !!! warning "Not ported yet"
-    ColdIgniter has no automatic routing.
+    Auto Routing (Legacy) is not ported. ColdIgniter has only [Auto Routing (Improved)](auto_routing_improved.md).
 
 ### Configuration Options (Legacy)
 
 !!! warning "Not ported yet"
-    ColdIgniter has no automatic routing.
+    Auto Routing (Legacy) is not ported. ColdIgniter has only [Auto Routing (Improved)](auto_routing_improved.md).
 
 #### Default Controller (Legacy)
 
 !!! warning "Not ported yet"
-    ColdIgniter has no automatic routing.
+    Auto Routing (Legacy) is not ported. ColdIgniter has only [Auto Routing (Improved)](auto_routing_improved.md).
 
 ##### For Site Root URI (Legacy)
 
 !!! warning "Not ported yet"
-    ColdIgniter has no automatic routing.
+    Auto Routing (Legacy) is not ported. ColdIgniter has only [Auto Routing (Improved)](auto_routing_improved.md).
 
 ##### For Directory URI (Legacy)
 
 !!! warning "Not ported yet"
-    ColdIgniter has no automatic routing.
+    Auto Routing (Legacy) is not ported. ColdIgniter has only [Auto Routing (Improved)](auto_routing_improved.md).
 
 #### Default Method (Legacy)
 
 !!! warning "Not ported yet"
-    ColdIgniter has no automatic routing.
+    Auto Routing (Legacy) is not ported. ColdIgniter has only [Auto Routing (Improved)](auto_routing_improved.md).
 
 ## Confirming Routes
 
@@ -543,12 +583,12 @@ CodeIgniter lists the routes with the command `spark routes`. ColdIgniter has no
 #### Auto Routing (Improved)
 
 !!! warning "Not ported yet"
-    ColdIgniter has no automatic routing.
+    The output of `spark routes` for Auto Routing (Improved) is not ported, because ColdIgniter has no command line tool.
 
 #### Auto Routing (Legacy)
 
 !!! warning "Not ported yet"
-    ColdIgniter has no automatic routing.
+    Auto Routing (Legacy) is not ported. ColdIgniter has only [Auto Routing (Improved)](auto_routing_improved.md).
 
 #### Sort by Handler
 

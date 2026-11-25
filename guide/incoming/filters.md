@@ -96,7 +96,7 @@ After filters are almost the same as before filters, except that you can only re
 There are two ways to set when filters run. One is in `app/Config/Filters.cfc`. The other is in `app/Config/Routes.cfm`. To apply filters to defined routes, use the routes file and see [URI Routing](routing.md).
 
 !!! note
-    The safest way to apply filters is to apply them to routes. ColdIgniter has no auto routing, so only the routes you define can be reached.
+    The safest way to apply filters is to turn auto routing off (see [Use Defined Routes Only](routing.md#use-defined-routes-only)) and set the filters on routes.
 
 ### app/Config/Filters.cfc
 
@@ -190,8 +190,8 @@ If you need several URI paths, use a list of patterns:
 
 #### methods
 
-!!! warning
-    ColdIgniter has no auto routing, so only the routes you define can be reached.
+!!! note "Difference from CodeIgniter"
+    CodeIgniter warns that a filter set in `methods` can be bypassed with Auto Routing (Legacy), which lets any HTTP method reach a controller. ColdIgniter does not have Auto Routing (Legacy). Auto Routing (Improved) runs only a controller method that has the HTTP verb of the request in its name, such as `getIndex()`.
 
 You can apply filters to all requests of one HTTP method, like `POST`, `GET` or `PUT`. The key is the method in uppercase. The value is a list of aliases to run:
 

@@ -5,7 +5,7 @@
 Before you deploy a ColdIgniter application to production, there are a few things you can do to make it run more efficiently.
 
 !!! note "Difference from CodeIgniter"
-    CodeIgniter 4 has a `spark optimize` command, Composer optimization and PHP preloading. ColdIgniter has no command line tool, no Composer and nothing to preload, so these are left out.
+    CodeIgniter 4 has a `spark optimize` command and Composer optimization. ColdIgniter has no command line tool, no Composer and no preloading step, so these are left out.
 
 ### Production environment
 

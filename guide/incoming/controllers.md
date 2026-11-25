@@ -166,43 +166,44 @@ Even if you define a route to `Helloworld::utility`, the URI shows a "page not f
 
 ## Auto Routing (Improved)
 
-!!! warning "Not ported yet"
-    ColdIgniter has no automatic routing. Every URI needs a route.
+Auto Routing (Improved) is a more secure automatic routing system.
+
+See [Auto Routing (Improved)](auto_routing_improved.md) for details.
 
 ## Auto Routing (Legacy)
 
 !!! warning "Not ported yet"
-    ColdIgniter has no automatic routing. Every URI needs a route.
+    Auto Routing (Legacy) is not ported. Use [Auto Routing (Improved)](auto_routing_improved.md) or defined routes.
 
 ### Let's try it: Hello World! (Legacy)
 
 !!! warning "Not ported yet"
-    This part needs automatic routing. Define a route in `app/Config/Routes.cfm` instead.
+    This part needs Auto Routing (Legacy). Use [Auto Routing (Improved)](auto_routing_improved.md#lets-try-it-hello-world) or define a route in `app/Config/Routes.cfm`.
 
 ### Methods (Legacy)
 
 !!! warning "Not ported yet"
-    This part needs automatic routing.
+    This part needs Auto Routing (Legacy).
 
 ### Passing URI Segments to Your Methods (Legacy)
 
 !!! warning "Not ported yet"
-    Without automatic routing, segments reach your method through route placeholders. See [URI Routing](routing.md).
+    This part needs Auto Routing (Legacy). Segments reach your method through route placeholders (see [URI Routing](routing.md)), or through [Auto Routing (Improved)](auto_routing_improved.md#passing-uri-segments-to-your-methods).
 
 ### Default Controller (Legacy)
 
 !!! warning "Not ported yet"
-    This part needs automatic routing.
+    This part needs Auto Routing (Legacy).
 
 #### Defining a Default Controller (Legacy)
 
 !!! warning "Not ported yet"
-    This part needs automatic routing.
+    This part needs Auto Routing (Legacy).
 
 ### Organizing Your Controllers into Sub-directories (Legacy)
 
 !!! warning "Not ported yet"
-    This part needs automatic routing.
+    This part needs Auto Routing (Legacy).
 
 ## Remapping Method Calls
 

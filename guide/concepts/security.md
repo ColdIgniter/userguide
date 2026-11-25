@@ -120,9 +120,6 @@ Preventing injection requires keeping data separate from commands and queries:
 - [Database escape methods](../database/queries.md)
 - [Query bindings](../database/queries.md)
 
-!!! warning "Not ported yet"
-    The `css` context of `esc()` is not ported (`Common.php` of CodeIgniter).
-
 ### A04:2021 Insecure Design
 
 Insecure design is a broad category representing different weaknesses, expressed as "missing or ineffective control design". There is a difference between insecure design and insecure implementation. A secure design can still have implementation defects. An insecure design cannot be fixed by a perfect implementation, as the needed security controls were never created to defend against specific attacks. One of the factors that contribute to insecure design is the lack of business risk profiling, and thus the failure to determine what level of security design is required.
@@ -453,10 +450,8 @@ APIs and the systems supporting them typically contain complex configurations, m
 - The config for global secure access (`app.forceGlobalSecureRequests`)
 - `force_https()` function
 - [Defined Route Routing](../incoming/routing.md)
+- [Auto Routing (Improved)](../incoming/auto_routing_improved.md)
 - [CORS](../libraries/cors.md) filter
-
-!!! warning "Not ported yet"
-    Improved auto routing (`Router/AutoRouterImproved.php` in CodeIgniter) is not ported. Use defined routes.
 
 ### API9:2023 Improper Inventory Management
 

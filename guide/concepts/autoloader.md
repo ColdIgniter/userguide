@@ -72,10 +72,13 @@ You will need to modify any existing files that are referencing the current name
 If you use third-party libraries that are not namespaced, you can load those classes using the classmap in **app/Config/Autoload.cfc**:
 
 ```cfm
-<cfset this.classmap["Legacy_Report"] = "/path/to/lib/Legacy_Report.cfc">
+<cfset this.classmap["Legacy_Report"] = "/app/Libraries/Legacy_Report.cfc">
 ```
 
 The key of each row is the name of the class that you want to locate. The value is the path of its `.cfc` file. The file has to exist, or the class is looked for in the namespaces. The classmap is read before the namespaces.
+
+!!! note "Difference from CodeIgniter"
+    A component can only be created from a file in the same folder tree, so the autoloader asks the nearest **autoload.cfm** at or above the class file to create it (see [Directory Structure](structure.md)). If there is none, loading the class throws `ColdIgniter.Autoloader.ClassNotFoundException`. Keep a classmap file under **app/**, or put an **autoload.cfm** in its folder or in a folder above it.
 
 ## Composer Support
 
@@ -101,7 +104,7 @@ To improve its performance, FileLocator Caching is available. The cached locator
 
 ### How to Delete Cached Data
 
-Once stored, the cached data does not change until it expires or is deleted. If you add or remove files, or change file paths or namespaces, the old data is returned and your app may not work properly. In that case delete the data with `service("locator").deleteCache()`, or delete the key `FileLocatorCache` from the cache.
+Once stored, the cached data does not change until it expires or is deleted. If you add or remove files, or change file paths or namespaces, the old data is returned and your app may not work properly. In that case, when caching is on, delete the data with `service("locator").deleteCache()`, or delete the key `FileLocatorCache` from the cache.
 
 ### How to Enable FileLocator Caching
 

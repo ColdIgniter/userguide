@@ -80,7 +80,7 @@ Next, assign it to all POST requests made on the site:
     Filters set in `methods` run only as before filters, which is what the Throttler needs. See [Filters](../incoming/filters.md#methods).
 
 !!! note "Difference from CodeIgniter"
-    CodeIgniter warns that a filter set in `$methods` can be bypassed, because its auto routing lets any HTTP method reach a controller. ColdIgniter has no auto routing, so only the routes you define can be reached, and the filter runs for every one of them that matches the method. See [Filters](../incoming/filters.md#methods).
+    CodeIgniter warns that a filter set in `$methods` can be bypassed with Auto Routing (Legacy), which lets any HTTP method reach a controller. ColdIgniter does not have Auto Routing (Legacy). Auto Routing (Improved) runs only a controller method that has the HTTP verb of the request in its name, such as `getIndex()`. See [Filters](../incoming/filters.md#methods).
 
 That is all there is to it. Now all POST requests made on the site have to pass the rate limit.
 

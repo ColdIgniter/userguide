@@ -122,8 +122,21 @@ When you want to pass a URI path (relative to baseURL), use `redirect().to()`:
 
 ### Redirect to a Defined Route
 
-!!! warning "Not ported yet"
-    `redirect().route()` and `redirect("route_name")` are not ported (reverse routing). They always throw an `HTTPException` with "The route for ... cannot be found". Use `redirect().to()` with the path.
+When you want to pass a [route name](../incoming/routing.md#named-routes) or `Controller::method` for [reverse routing](../incoming/routing.md#reverse-routing), use `redirect().route()`:
+
+```cfm
+<!--- go to a named route. "user_gallery" is the route name, not a URI path. --->
+<cfreturn redirect().route("user_gallery")>
+```
+
+When you pass an argument to `redirect()`, it is treated as a route name or `Controller::method` for reverse routing, not as a relative or full URI. It is the same as using `redirect().route()`:
+
+```cfm
+<!--- go to a named or reverse-routed URI. --->
+<cfreturn redirect("named_route")>
+```
+
+`route(route, params, code, method)` takes the parameters of the route as an array in `params`. If no route is found, it throws an `HTTPException`.
 
 ### Redirect Back
 
@@ -301,8 +314,15 @@ Returns the current reason phrase for this response. If no status has been set, 
 
 ### setDate
 
-!!! warning "Not ported yet"
-    `setDate()` is not ported, and no `Date` header is sent.
+`setDate(date)`
+
+- `date` (`Time`): the date to set the `Date` header to, in UTC.
+- Returns the current response instance.
+
+Sets the `Date` header. The `Time` is converted to UTC and written as an HTTP date, for example `Wed, 25 Nov 2026 10:00:00 GMT`. The `Time` you pass keeps its own time zone.
+
+!!! note "Difference from CodeIgniter"
+    `sendHeaders()` does not add a `Date` header when it is missing. IIS adds the header itself, and making a `Time` for each request would only cost time. Call `setDate()` yourself if you need a particular value.
 
 ### setContentType
 
@@ -370,13 +390,6 @@ Sets the `Last-Modified` header. A `Time` is converted to UTC. A string is set a
 
 !!! note "Difference from CodeIgniter"
     CFML has no `DateTime`, and a date value such as `Now()` cannot be told from a string, so it is set as it is and is not converted to UTC. Pass a `Time` to have it converted. The `Time` you pass is not changed.
-
-### setDate
-
-`setDate(date)`
-
-- `date` (`Time`): the date to set the `Date` header to, in UTC.
-- Returns the current response instance.
 
 ### send
 
