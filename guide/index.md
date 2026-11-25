@@ -5,11 +5,16 @@ ColdIgniter is a CFML port of [CodeIgniter 4](https://codeigniter.com/). It runs
 !!! note "This guide is still being written"
     The menu has the same sections and pages as the CodeIgniter 4 guide, so an address there is the same address here. Many pages are still stubs: they say what they will cover and that they are not written yet. Pages for parts of CodeIgniter 4 that are not ported to ColdIgniter yet say so.
 
-## Where to start
+## Getting Started
 
+- [Welcome to ColdIgniter](intro/index.md): what ColdIgniter is and who it is for.
 - [Server requirements](intro/requirements.md): what the server needs.
 - [Installation](installation/index.md): how to put a site on a server.
+- [Running Your App](installation/running.md): how to set up IIS and the first settings.
 - [Several servers](installation/several_servers.md): one application behind a load balancer.
+
+## Guides and reference
+
 - [Controllers](incoming/controllers.md): how a request reaches your code.
 
 ## The source

@@ -2,18 +2,24 @@
 
 ColdIgniter is written for ColdFusion MX 6.1. A default install is enough: apart from the data source of your database, no setting in the ColdFusion Administrator has to be changed to run it.
 
-## ColdFusion
+## ColdFusion and Required Extensions
 
 | | |
 |---|---|
 | Server | ColdFusion MX 6.1 |
 | Java | 1.4.2, the version that ships with MX 6.1 |
 
-ColdFusion MX 6.0 is the oldest version that has components (`cfcomponent`, `cffunction`, `cfargument`). MX 6.1 added `super` and ships with Java 1.4.2, which has `java.util.LinkedHashMap` and `java.util.regex`. The port uses both in many places.
+ColdFusion MX 6.0 is the oldest version that has components (`cfcomponent`, `cffunction`, `cfargument`). MX 6.1 added `super` and ships with Java 1.4.2, which has `java.util.LinkedHashMap` and `java.util.regex`. The port uses both in many places. On a server older than 6.1 the front controller stops with a 503 message that names the version it found.
 
-## Database
+No add-on, extension or custom tag is required.
 
-The supported database is Microsoft SQL Server 2000 SP3, with the `SQLSRV` driver.
+## Optional Extensions
+
+ColdIgniter needs no optional extension. These parts of CodeIgniter 4 are not ported yet, so there is nothing to install for them: the CURLRequest class, the Image class (with its GD and ImageMagick handlers) and the Memcached and Redis cache handlers.
+
+## Supported Databases
+
+A database is required for most web application programming. The supported database is Microsoft SQL Server 2000 SP3, with the `SQLSRV` driver.
 
 ColdIgniter connects only through a data source of the ColdFusion Administrator. In the database group of `app/Config/Database.cfc`, set two values:
 
@@ -23,6 +29,9 @@ ColdIgniter connects only through a data source of the ColdFusion Administrator.
 | `DSN` | The name of the data source. |
 
 The login is kept in the data source, not in the application.
+
+!!! note "Difference from CodeIgniter"
+    CodeIgniter 4 has drivers for MySQL, PostgreSQL, SQLite3, SQL Server and Oracle. ColdIgniter has the SQL Server driver only.
 
 ## Encryption
 
