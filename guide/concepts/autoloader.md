@@ -69,8 +69,13 @@ You will need to modify any existing files that are referencing the current name
 
 ### Classmap
 
-!!! warning "Not ported yet"
-    The class map of **app/Config/Autoload.cfc** is read, but classes listed in it are not loaded from it yet. Use a namespace in `psr4`.
+If you use third-party libraries that are not namespaced, you can load those classes using the classmap in **app/Config/Autoload.cfc**:
+
+```cfm
+<cfset this.classmap["Legacy_Report"] = "/path/to/lib/Legacy_Report.cfc">
+```
+
+The key of each row is the name of the class that you want to locate. The value is the path of its `.cfc` file. The file has to exist, or the class is looked for in the namespaces. The classmap is read before the namespaces.
 
 ## Composer Support
 
@@ -82,5 +87,29 @@ There is one autoloader only, so there is no order of autoloaders.
 
 ## FileLocator Caching
 
-!!! warning "Not ported yet"
-    The FileLocator (`Autoloader/FileLocator.php` and `FileLocatorCached.php` in CodeIgniter) is not ported, so there is no `service("locator")` and no FileLocator cache. Helpers are searched in **app/Helpers** and **system/Helpers** only.
+The **FileLocator** (`service("locator")`) is responsible for finding files or getting a class name from a file. `helper()`, namespaced views, the Parser and the class search of [Factories](factories.md) use it.
+
+To improve its performance, FileLocator Caching is available. The cached locator (`ColdIgniter\Autoloader\FileLocatorCached`) is used when the setting is on.
+
+### How It Works
+
+- At the end of the request, the data the locator found is saved in the cache, if the data changed.
+- When the locator is made, the saved data is restored if it is there.
+
+!!! note "Difference from CodeIgniter"
+    CFML has no destructor, so ColdIgniter saves the data at the end of the request, after the `post_system` event. The data is kept by the [cache service](../libraries/caching.md) under the key `FileLocatorCache`, not in a file of its own, and it is kept for one day.
+
+### How to Delete Cached Data
+
+Once stored, the cached data does not change until it expires or is deleted. If you add or remove files, or change file paths or namespaces, the old data is returned and your app may not work properly. In that case delete the data with `service("locator").deleteCache()`, or delete the key `FileLocatorCache` from the cache.
+
+### How to Enable FileLocator Caching
+
+Set the following property to `true` in **app/Config/Optimize.cfc**:
+
+```cfm
+<cfset this.locatorCacheEnabled = true>
+```
+
+!!! note "Difference from CodeIgniter"
+    There is no `spark optimize` command, so the property is set by hand. The other property of **app/Config/Optimize.cfc**, `configCacheEnabled`, is not read by anything yet (see [Config Caching](factories.md#config-caching)).

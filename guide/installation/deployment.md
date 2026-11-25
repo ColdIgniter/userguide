@@ -14,12 +14,11 @@ Set `CI_ENVIRONMENT` to `production` in the `.env` file. This is the default. In
 ### Config Caching
 
 !!! warning "Not ported yet"
-    The caching of Config objects in `app/Config/Optimize` is not ported.
+    The caching of Config objects (`configCacheEnabled` in `app/Config/Optimize.cfc`) is not ported: nothing reads the setting.
 
 ### FileLocator Caching
 
-!!! warning "Not ported yet"
-    The FileLocator class and its cached version are not ported.
+Caching the file paths that the FileLocator found can improve performance. However, the cache has to be deleted when you add, remove or change file paths. See [FileLocator Caching](../concepts/autoloader.md#filelocator-caching).
 
 ### Page caching
 

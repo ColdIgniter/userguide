@@ -208,13 +208,17 @@ introduction to all of the cache headers power, but you can get a good understan
 By default, all response objects sent through ColdIgniter have HTTP caching turned off. The options and exact
 circumstances are too varied for us to be able to create a good default other than turning it off.
 
-!!! warning "Not ported yet"
-    `setCache()` (and `setLastModified()`) are not ported. Set the headers yourself, for example:
+It is simple to set the cache values to what you need, with the `setCache()` method. The options are a map (a Java `LinkedHashMap`) of key and value pairs:
 
 ```cfm
-<cfset this.response.setHeader("Cache-Control", "public, max-age=3600")>
-<cfset this.response.setHeader("ETag", etag)>
+<cfset options = CreateObject("java", "java.util.LinkedHashMap").init()>
+<cfset options["max-age"] = 300>
+<cfset options["s-maxage"] = 900>
+<cfset options["etag"] = "abcde">
+<cfset this.response.setCache(options)>
 ```
+
+The options are, with a couple of exceptions, assigned to the `Cache-Control` header. You are free to set all of the options exactly as you need for your specific situation. While most of the options are applied to the `Cache-Control` header, `etag` and `last-modified` are put in their own headers.
 
 ## Class Reference
 
@@ -336,13 +340,43 @@ of all response messages:
 
 ### setCache
 
-!!! warning "Not ported yet"
-    `setCache()` is not ported.
+`setCache(options)`
+
+- `options` (map): key and value pairs of cache control settings.
+- Returns the current response instance.
+
+Sets the `Cache-Control` headers, including `ETag` and `Last-Modified`. Typical keys are:
+
+- etag
+- last-modified
+- max-age
+- s-maxage
+- private
+- public
+- must-revalidate
+- proxy-revalidate
+- no-transform
+
+When you pass the `last-modified` option, it can be a date string or a `Time` object. A directive without a value, such as `public`, is a key that is a number (`0`, `1`) with the directive as its value. Empty options change nothing.
 
 ### setLastModified
 
-!!! warning "Not ported yet"
-    `setLastModified()` is not ported.
+`setLastModified(date)`
+
+- `date` (`Time` or string): the date to set the `Last-Modified` header to.
+- Returns the current response instance.
+
+Sets the `Last-Modified` header. A `Time` is converted to UTC. A string is set as it is.
+
+!!! note "Difference from CodeIgniter"
+    CFML has no `DateTime`, and a date value such as `Now()` cannot be told from a string, so it is set as it is and is not converted to UTC. Pass a `Time` to have it converted. The `Time` you pass is not changed.
+
+### setDate
+
+`setDate(date)`
+
+- `date` (`Time`): the date to set the `Date` header to, in UTC.
+- Returns the current response instance.
 
 ### send
 

@@ -39,17 +39,20 @@ For example, to load the [Cookie Helper](../helpers/cookie_helper.md) file, whic
 
 #### Auto-Discovery and Composer Packages
 
-!!! warning "Not ported yet"
-    Helper files are looked for in **app/Helpers** and **system/Helpers** only. They are not searched for in the other namespaces, as auto-discovery does in CodeIgniter. There is no Composer on ColdFusion MX 6.1.
+By default, ColdIgniter searches for the helper files in all namespaces that the autoloader knows (see [Autoloader](../concepts/autoloader.md)), through the file locator. You can also [specify a namespace](#loading-from-specified-namespace) for a helper that you want to load.
+
+!!! note "Difference from CodeIgniter"
+    There is no Composer on ColdFusion MX 6.1, so the namespaces are the ones in the `psr4` map of **app/Config/Autoload.cfc**.
 
 #### Load Order
 
-The `helper()` function looks for a file of the name in **app/Helpers** and in **system/Helpers**, and loads ALL matching helpers of the same name. This allows you to add to the functions of a helper that ships with the framework.
+The `helper()` function looks for a file of the name in the **Helpers** folder of every namespace, and loads ALL matching helpers of the same name. This allows any module's helpers to be loaded, as well as any helpers you have created for this application, and you can add to the functions of a helper that ships with the framework.
 
 The load order is as follows:
 
 1. app/Helpers - Files loaded here are always loaded first.
-2. system/Helpers - The base file is loaded last.
+2. The **Helpers** folder of each other namespace.
+3. system/Helpers - The base file is loaded last.
 
 A function name that is already defined is kept: the helper functions have no guard against a second definition, and the first one stays. As the file of your application is loaded first, its functions win.
 
@@ -71,8 +74,13 @@ However, if you want to load them for the whole controller, you can use the `hel
 
 ### Loading from Specified Namespace
 
-!!! warning "Not ported yet"
-    A helper name with a namespace, such as `helper("Example\Blog\blog")`, is not ported. The call gives a "file not found" error. Put the file in **app/Helpers**.
+By default, ColdIgniter searches for the helper files in all namespaces and loads all the files it finds.
+
+If you want to load only a helper in a specific namespace, prefix the name of the helper with the namespace that it can be located in. Within that namespaced directory, the loader expects it to live within a sub-directory named **Helpers**. For example, if the Blog code is in the namespace `Example\Blog`, with its files in **Modules/Blog/**, the helper file **Modules/Blog/Helpers/blog_helper.cfm** is loaded with:
+
+```cfm
+<cfset helper("Example\Blog\blog")>
+```
 
 ### Auto-loading Helpers
 

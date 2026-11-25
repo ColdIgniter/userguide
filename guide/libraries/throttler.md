@@ -10,10 +10,10 @@ Say we want an action to happen once every second. The first call to the Throttl
 
 ```cfm
 <cfset throttler = service("throttler")>
-<cfset allowed = throttler.check(Hash(request_().getIPAddress()), 60, MINUTE)>
+<cfset allowed = throttler.check(Hash(request_().getIPAddress()), 60, request.MINUTE)>
 ```
 
-Here we use one of the [global constants](../general/common_functions.md) for the time, to make it a little more readable. This says that the bucket allows 60 actions every minute, or 1 action every second.
+Here we use one of the [global constants](../general/common_functions.md#time-constants) for the time, to make it a little more readable. This says that the bucket allows 60 actions every minute, or 1 action every second.
 
 Say that a third-party script was trying to hit a URL repeatedly. At first, it would be able to use all 60 of those tokens in less than a second. After that the Throttler would only allow one action per second, which may slow down the requests enough that the attack is no longer worth it.
 
@@ -40,7 +40,7 @@ You can make your own Throttler filter in `app/Filters/Throttle.cfc`, along the 
 		<cfset var throttler = service("throttler")>
 
 		<!--- restrict an IP address to no more than 1 request per second --->
-		<cfif NOT throttler.check(Hash(arguments.request_.getIPAddress()), 1, SECOND)>
+		<cfif NOT throttler.check(Hash(arguments.request_.getIPAddress()), 1, request.SECOND)>
 			<cfreturn service("response").setStatusCode(429)>
 		</cfif>
 
@@ -79,6 +79,9 @@ Next, assign it to all POST requests made on the site:
 !!! note
     Filters set in `methods` run only as before filters, which is what the Throttler needs. See [Filters](../incoming/filters.md#methods).
 
+!!! note "Difference from CodeIgniter"
+    CodeIgniter warns that a filter set in `$methods` can be bypassed, because its auto routing lets any HTTP method reach a controller. ColdIgniter has no auto routing, so only the routes you define can be reached, and the filter runs for every one of them that matches the method. See [Filters](../incoming/filters.md#methods).
+
 That is all there is to it. Now all POST requests made on the site have to pass the rate limit.
 
 ## Class Reference
@@ -102,7 +105,7 @@ Returns the number of seconds until another token should be available (a number)
 After `check()` has been run and returned `false`, this method can be used to find the time until a new token should be available and the action can be tried again. The minimum wait time is one second. After a `check()` that returned `true`, it returns `0`.
 
 ```cfm
-<cfif NOT throttler.check(key, 60, MINUTE)>
+<cfif NOT throttler.check(key, 60, request.MINUTE)>
 	<cfset waitSeconds = throttler.getTokenTime()>
 </cfif>
 ```
@@ -117,6 +120,9 @@ After `check()` has been run and returned `false`, this method can be used to fi
 Removes and resets the bucket. It does not fail if the bucket does not exist.
 
 ### setTestTime()
+
+!!! note "Difference from CodeIgniter"
+    `setTestTime()` is not in the upstream class reference. It is added here because the method exists in the class.
 
 `setTestTime(time)`
 

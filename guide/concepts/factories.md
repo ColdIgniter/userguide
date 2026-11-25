@@ -33,7 +33,7 @@ On the other hand, Services have code to create instances, so a service can crea
 Take **Models** as an example. In CodeIgniter you get the Factory for models with the magic static method `Factories::models()`. The static method name is called the *component*.
 
 !!! note "Difference from CodeIgniter"
-    A function cannot be called by a name that is made up at run time. In ColdIgniter, `__callStatic(component, arguments_)` does what the magic static method does. `component` is the name in lower case (`models`, `config`, `libraries`), and `arguments_` is an array. Its first item is the class name, its second item (optional) is a structure of [options](#factories-options), and the other items are given to the constructor of the class. For the common case of a shared instance with no options, `get(component, alias)` is a shorter call.
+    A function cannot be called by a name that is made up at run time. In ColdIgniter, `__callStatic(component, arguments_)` does what the magic static method does. `component` is the name of the component (`models`, `config`, `libraries`; the case does not matter), and `arguments_` is an array. Its first item is the class name, its second item (optional) is a structure of [options](#factories-options), and the other items are given to the constructor of the class. For the common case of a shared instance with no options, `get(component, alias)` is a shorter call.
 
 Both calls give an empty string when the class cannot be found.
 
@@ -60,7 +60,7 @@ The next time you ask for the same class anywhere in your code, Factories makes 
 ```
 
 !!! note "Difference from CodeIgniter"
-    The search goes through the namespaces known to the autoloader, because the file locator of CodeIgniter is not ported yet. The result is the same.
+    The search uses the file locator (`service("locator")`), as in CodeIgniter, and looks for `.cfc` files. Before it, Factories asks whether a class file exists, and for a CFML component this can only find out that the file exists, it does not load the class. In rare cases (for example when `preferApp` is `false`, or a module is a folder inside **app**) this can give an `App` class where CodeIgniter goes on to a class of another namespace.
 
 ##### Passing Short Classname with Sub-directories
 
@@ -116,6 +116,9 @@ It works like the call `__callStatic("models", ...)` above, so a short class nam
 <cfset userModel = model("UserModel", false)>
 ```
 
+!!! note "Difference from CodeIgniter"
+    CodeIgniter passes the connection by reference, so a connection that the model makes is written back to the caller. This cannot be done here: a connection is only passed in.
+
 ## Defining Classname to be Loaded
 
 You can define the class name to be loaded before loading the class, with the `define()` method:
@@ -133,7 +136,7 @@ After that, if you load `Myth\Auth\Models\UserModel` with Factories, the `App\Mo
 <cfset userModel = factories.get("models", "Myth\Auth\Models\UserModel")>
 ```
 
-`define()` throws an `InvalidArgumentException` when the class does not exist, or when the alias is already defined for another class. Defining the same alias for the same class again does nothing.
+`define()` throws an error of the type `ColdIgniter.Exceptions.InvalidArgumentException` when the class does not exist, or when the alias is already defined for another class. Defining the same alias for the same class again does nothing.
 
 ## Factory Parameters
 
@@ -247,6 +250,9 @@ For example, by default Factories assumes that you want a shared instance of a c
 
 ### getOptions Method
 
+!!! note "Difference from CodeIgniter"
+    This section, and the sections `reset Method` and `injectMock Method`, are not on the CodeIgniter page. They are added here because these methods are part of the component.
+
 `getOptions(component)` returns the stored options of a component. If none are stored yet, they are taken from `Config\Factory` (or from the defaults) and stored.
 
 ### reset Method
@@ -255,7 +261,7 @@ For example, by default Factories assumes that you want a shared instance of a c
 
 ### injectMock Method
 
-`injectMock(component, alias, instance)` stores an object as the shared instance for an alias, so the next request for that alias returns it. It is meant for testing, to replace a class by a mock:
+`injectMock(component, alias, instance)` stores an object as the shared instance for an alias, so the next request for that alias returns it. It is meant for testing, to replace a class by a mock. The instance has to be an object made by `new_()`, because Factories reads the class name the autoloader keeps in the object:
 
 ```cfm
 <cfset factories.injectMock("models", "UserModel", mockModel)>
