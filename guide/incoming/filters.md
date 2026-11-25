@@ -117,7 +117,7 @@ The `aliases` map gives a simple name to one filter class, or to a list of filte
 <cfset this.aliases["csrf"] = "ColdIgniter\Filters\CSRF">
 ```
 
-Aliases are required. If you use a name in the settings that is not an alias, an error is thrown, unless it is the name of a class that exists, which is how the Classname Filter of a route works (see [URI Routing](routing.md)). Using aliases makes it easy to swap the class that is used. This is useful if you change your authentication system, because you only change the class of the filter.
+Aliases are required. If you use a name in the settings that is not an alias, an error is thrown. Class names are not accepted here. They work only in the `filter` option of a route (see [URI Routing](routing.md)). Using aliases makes it easy to swap the class that is used. This is useful if you change your authentication system, because you only change the class of the filter.
 
 You can join several filters into one alias, so a complex set of filters is easy to apply:
 

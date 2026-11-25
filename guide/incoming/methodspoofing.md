@@ -12,7 +12,7 @@ To spoof the method, add a hidden input named `_method` to the form. Its value i
 
 This form is turned into a PUT request. As far as the routing and the [IncomingRequest](incomingrequest.md) class are concerned, it is a true PUT request.
 
-The form must use the POST method. GET requests cannot be spoofed. Only the values `PUT`, `PATCH` and `DELETE` are accepted. Any other value is ignored and the request stays a POST.
+The form must use the POST method. GET requests cannot be spoofed. Only the values `PUT`, `PATCH` and `DELETE` are accepted, and they must be in upper case. Any other value is ignored and the request stays a POST.
 
 !!! note
     Check the configuration of your web server. Some servers do not support all HTTP verbs with the default configuration and need extra setup.

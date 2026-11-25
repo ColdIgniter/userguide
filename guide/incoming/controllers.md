@@ -91,11 +91,11 @@ If you set `this.helpers` in `BaseController`, set it before the call to `parent
 ## forceHTTPS
 
 !!! warning "Not ported yet"
-    The `forceHTTPS()` method and the `this.forceHTTPS` property do nothing yet.
+    The `forceHTTPS()` method does not exist yet.
 
 ## Validating Data
 
-### $this->validateData()
+### validateData()
 
 The controller has the method `validateData()` to check data. It takes four arguments: the data to check (a struct), the rules (a struct), custom error messages (optional) and a database group (optional).
 
@@ -124,7 +124,7 @@ The [Validation](../libraries/validation.md) page describes the formats of rules
 </cffunction>
 ```
 
-### $this->validate()
+### validate()
 
 !!! important
     This method exists only for compatibility. Use `validateData()` in new code.
@@ -132,14 +132,16 @@ The [Validation](../libraries/validation.md) page describes the formats of rules
 The controller also has `validate()`. It takes the rules and, optionally, custom messages. It reads the data to check from `this.request_`.
 
 !!! warning
-    `validate()` reads its data with `getVar()`, which can take a value from the query string, the form or a cookie. An attacker could change what is checked. Use `validateData()` to check form data only.
+    `validate()` reads its data with `getVar()`, which reads the values in the order of the setting `request_order` (default `GP`, the form and URL values), or the JSON body. An attacker could change what is checked. Use `validateData()` to check form data only.
 
 Use `this.validator.getValidated()` to get the validated data after `validate()`.
 
-Instead of the rules, you can pass the name of a group defined in `app/Config/Validation.cfc`:
+Instead of the rules, you can pass the name of a group defined in `app/Config/Validation.cfc`. The group is a property of that component, for example `this.signup`. If the property does not exist, an error is thrown:
 
 ```cfm
 <cfif NOT validate("signup")>
+	<cfset info = StructNew()>
+	<cfset info["errors"] = this.validator.getErrors()>
 	<cfreturn view("signup", info)>
 </cfif>
 ```
@@ -148,7 +150,7 @@ Validation can also be done in the model. Where you do it is up to you.
 
 ## Protecting Methods
 
-Some methods should not be reachable from the web. Declare them with `access="private"`. A request for a private method gives a "page not found" error.
+Some methods should not be reachable from the web. Declare them with `access="private"`. A request for a private method gives a "page not found" error. A method whose name starts with an underscore (except `__invoke`) also gives one.
 
 ```cfm
 <cfcomponent output="no" extends="BaseController">

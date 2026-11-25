@@ -141,7 +141,7 @@ Reads from GET, and from POST if the value is not in GET. With no index it retur
 !!! important
     This method exists only for backward compatibility. Do not use it in new projects.
 
-`getVar()` reads the request values (the form, URL and cookie values together). If the `Content-Type` header holds `application/json`, it returns the JSON data instead.
+`getVar()` reads the request values in the order of the setting `request_order`. The default is `GP`, so the form and URL values are read, and cookies are left out unless the setting includes `C`. If the `Content-Type` header holds `application/json`, it returns the JSON data instead.
 
 ### Getting JSON Data
 
@@ -183,7 +183,7 @@ Use `getRawInputVar()` to get one value from the raw input and filter it. It acc
 
 ### Filtering Input Data
 
-You can pass a filter as the second argument of any of these methods, except `getJSON()` and `getRawInput()`. The filter is a constant such as `request.FILTER_VALIDATE_INT`. For the form of the flags, and for what a failed filter returns, see `fetchGlobal()` in the [Request Class](request.md).
+You can pass a filter as the second argument of any of these methods, except `getJSON()` and `getRawInput()`. In `getJsonVar()` the filter is the third argument; the second argument is `assoc`, and a filter passed there is ignored. The filter is a constant such as `request.FILTER_VALIDATE_INT`. For the form of the flags, and for what a failed filter returns, see `fetchGlobal()` in the [Request Class](request.md).
 
 ```cfm
 <cfset id = this.request_.getPost("id", request.FILTER_VALIDATE_INT)>
@@ -251,7 +251,7 @@ You can work with the current URI string, the path relative to your base URL, wi
 
 ## Uploaded Files
 
-All uploaded files are returned by `getFiles()`, an array of `UploadedFile` objects. The files are read when you first ask for them.
+All uploaded files are returned by `getFiles()`, a struct of `UploadedFile` objects, keyed by the field name. The files are read when you first ask for them.
 
 ```cfm
 <cfset files = this.request_.getFiles()>

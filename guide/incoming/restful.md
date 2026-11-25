@@ -33,9 +33,9 @@ You can quickly create a handful of RESTful routes for one resource with the `re
 The second argument is a map of options that change the routes that are created. Make it with `StructNew()`. These routes are made for use as an API, where more HTTP methods are allowed. You can pass the `websafe` option to also create update and delete routes that work with HTML forms:
 
 ```cfm
-<cfset options = StructNew()>
-<cfset options["websafe"] = 1>
-<cfset routes.resource("photos", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["websafe"] = 1>
+<cfset routes.resource("photos", routeOptions)>
 
 <!--- The following routes are created as well: --->
 <cfset routes.post("photos/(:any)/delete", "Photos::delete/$1")>
@@ -47,9 +47,9 @@ The second argument is a map of options that change the routes that are created.
 You can choose the controller that is used by passing the `controller` option with the name of the controller:
 
 ```cfm
-<cfset options = StructNew()>
-<cfset options["controller"] = "Gallery">
-<cfset routes.resource("photos", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["controller"] = "Gallery">
+<cfset routes.resource("photos", routeOptions)>
 
 <!--- Would create routes like: --->
 <cfset routes.get("photos", "App\Controllers\Gallery::index")>
@@ -58,9 +58,9 @@ You can choose the controller that is used by passing the `controller` option wi
 If the name of the controller starts with a backslash, the default namespace is not added in front of it, and you give the full class name:
 
 ```cfm
-<cfset options = StructNew()>
-<cfset options["controller"] = "\App\Gallery">
-<cfset routes.resource("photos", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["controller"] = "\App\Gallery">
+<cfset routes.resource("photos", routeOptions)>
 
 <!--- Would create routes like: --->
 <cfset routes.get("photos", "\App\Gallery::index")>
@@ -73,9 +73,9 @@ See also [Controller's Namespace](routing.md).
 By default the default placeholder of the route collection is used when a resource ID is needed, which is `(:any)` unless you change it with `setDefaultConstraint()`. You can change it for one resource by passing the `placeholder` option with the new string to use:
 
 ```cfm
-<cfset options = StructNew()>
-<cfset options["placeholder"] = "(:num)">
-<cfset routes.resource("photos", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["placeholder"] = "(:num)">
+<cfset routes.resource("photos", routeOptions)>
 
 <!--- Generates routes like: --->
 <cfset routes.get("photos/(:num)", "Photos::show/$1")>
@@ -92,17 +92,17 @@ You can limit the routes that are created with the `only` option. It is **an arr
 <cfset only = ArrayNew(1)>
 <cfset ArrayAppend(only, "index")>
 <cfset ArrayAppend(only, "show")>
-<cfset options = StructNew()>
-<cfset options["only"] = only>
-<cfset routes.resource("photos", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["only"] = only>
+<cfset routes.resource("photos", routeOptions)>
 ```
 
 You can also remove routes you do not need with the `except` option. It is also **an array** or **a comma separated list** of method names. This option is applied after `only`:
 
 ```cfm
-<cfset options = StructNew()>
-<cfset options["except"] = "new,edit">
-<cfset routes.resource("photos", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["except"] = "new,edit">
+<cfset routes.resource("photos", routeOptions)>
 ```
 
 The valid methods are `index`, `show`, `create`, `update`, `new`, `edit` and `delete`.
@@ -178,9 +178,9 @@ The second argument is a map of options that change the routes that are created.
 You can choose the controller that is used by passing the `controller` option with the name of the controller:
 
 ```cfm
-<cfset options = StructNew()>
-<cfset options["controller"] = "Gallery">
-<cfset routes.presenter("photos", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["controller"] = "Gallery">
+<cfset routes.presenter("photos", routeOptions)>
 
 <!--- Would create routes like: --->
 <cfset routes.get("photos", "App\Controllers\Gallery::index")>
@@ -189,9 +189,9 @@ You can choose the controller that is used by passing the `controller` option wi
 A name that starts with a backslash is the full class name:
 
 ```cfm
-<cfset options = StructNew()>
-<cfset options["controller"] = "\App\Gallery">
-<cfset routes.presenter("photos", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["controller"] = "\App\Gallery">
+<cfset routes.presenter("photos", routeOptions)>
 
 <!--- Would create routes like: --->
 <cfset routes.get("photos", "\App\Gallery::index")>
@@ -204,9 +204,9 @@ See also [Controller's Namespace](routing.md).
 By default the default placeholder of the route collection is used when a resource ID is needed. You can change it by passing the `placeholder` option with the new string to use:
 
 ```cfm
-<cfset options = StructNew()>
-<cfset options["placeholder"] = "(:num)">
-<cfset routes.presenter("photos", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["placeholder"] = "(:num)">
+<cfset routes.presenter("photos", routeOptions)>
 
 <!--- Generates routes like: --->
 <cfset routes.get("photos/(:num)", "Photos::show/$1")>
@@ -220,17 +220,17 @@ You can limit the routes that are created with the `only` option. It is **an arr
 <cfset only = ArrayNew(1)>
 <cfset ArrayAppend(only, "index")>
 <cfset ArrayAppend(only, "show")>
-<cfset options = StructNew()>
-<cfset options["only"] = only>
-<cfset routes.presenter("photos", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["only"] = only>
+<cfset routes.presenter("photos", routeOptions)>
 ```
 
 You can also remove routes you do not need with the `except` option. It is also **an array** or **a comma separated list** of method names. This option is applied after `only`:
 
 ```cfm
-<cfset options = StructNew()>
-<cfset options["except"] = "new,edit">
-<cfset routes.presenter("photos", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["except"] = "new,edit">
+<cfset routes.presenter("photos", routeOptions)>
 ```
 
 The valid methods are `index`, `show`, `new`, `create`, `edit`, `update`, `remove` and `delete`.

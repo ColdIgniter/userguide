@@ -98,9 +98,9 @@ If you put a backslash at the start, the name is used as it is:
 You can also set the namespace with the `namespace` option:
 
 ```cfm
-<cfset options = StructNew()>
-<cfset options["namespace"] = "Admin\Controllers">
-<cfset routes.get("/", "Home::index", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["namespace"] = "Admin\Controllers">
+<cfset routes.get("/", "Home::index", routeOptions)>
 ```
 
 See [Assigning Namespace](#assigning-namespace) for details.
@@ -278,17 +278,17 @@ The value of `filter` is a string or an array of strings. Each one is the alias 
 Use an alias defined in `app/Config/Filters.cfc` as the value of `filter`:
 
 ```cfm
-<cfset options = StructNew()>
-<cfset options["filter"] = "auth">
-<cfset routes.get("admin", "Admin::index", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["filter"] = "auth">
+<cfset routes.get("admin", "Admin::index", routeOptions)>
 ```
 
 You can pass arguments to the `before()` and `after()` methods of the filter. Write them after a colon, separated by commas:
 
 ```cfm
-<cfset options = StructNew()>
-<cfset options["filter"] = "role:admin,manager">
-<cfset routes.get("admin", "Admin::index", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["filter"] = "role:admin,manager">
+<cfset routes.get("admin", "Admin::index", routeOptions)>
 ```
 
 #### Classname Filter
@@ -296,9 +296,9 @@ You can pass arguments to the `before()` and `after()` methods of the filter. Wr
 You can use the class name of a filter as the value of `filter`:
 
 ```cfm
-<cfset options = StructNew()>
-<cfset options["filter"] = "App\Filters\AuthFilter">
-<cfset routes.get("admin", "Admin::index", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["filter"] = "App\Filters\AuthFilter">
+<cfset routes.get("admin", "Admin::index", routeOptions)>
 ```
 
 #### Multiple Filters
@@ -306,11 +306,11 @@ You can use the class name of a filter as the value of `filter`:
 You can use an array as the value of `filter`:
 
 ```cfm
-<cfset options = StructNew()>
-<cfset options["filter"] = ArrayNew(1)>
-<cfset ArrayAppend(options["filter"], "auth")>
-<cfset ArrayAppend(options["filter"], "throttle")>
-<cfset routes.get("admin", "Admin::index", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["filter"] = ArrayNew(1)>
+<cfset ArrayAppend(routeOptions["filter"], "auth")>
+<cfset ArrayAppend(routeOptions["filter"], "throttle")>
+<cfset routes.get("admin", "Admin::index", routeOptions)>
 ```
 
 ##### Filter Arguments
@@ -318,10 +318,10 @@ You can use an array as the value of `filter`:
 You can also pass arguments to a filter in the array:
 
 ```cfm
-<cfset options = StructNew()>
-<cfset options["filter"] = ArrayNew(1)>
-<cfset ArrayAppend(options["filter"], "auth:dual,noreturn")>
-<cfset routes.get("admin", "Admin::index", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["filter"] = ArrayNew(1)>
+<cfset ArrayAppend(routeOptions["filter"], "auth:dual,noreturn")>
+<cfset routes.get("admin", "Admin::index", routeOptions)>
 ```
 
 In this example the list `dual`, `noreturn` is passed to the `before()` and `after()` methods of the filter, in the argument `arguments_`.
@@ -331,9 +331,9 @@ In this example the list `dual`, `noreturn` is passed to the `before()` and `aft
 The [default namespace](#default-namespace) is put in front of the controllers. You can use a different namespace for one route with the `namespace` option. The value is the namespace you want:
 
 ```cfm
-<cfset options = StructNew()>
-<cfset options["namespace"] = "Admin\Controllers">
-<cfset routes.get("admin", "Admin::index", options)>
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["namespace"] = "Admin\Controllers">
+<cfset routes.get("admin", "Admin::index", routeOptions)>
 ```
 
 The new namespace is only used for that call.
@@ -437,7 +437,7 @@ the method `index()` of the controller `App\Controllers\Home` runs when the rout
 
 ### Translate URI Dashes
 
-This option replaces dashes (`-`) with underscores in the controller name and the method name taken from the route. A dash is not valid in a component or method name:
+This option replaces dashes (`-`) with underscores in the method name taken from the route. The controller name is not changed. A dash is not valid in a method name:
 
 ```cfm
 <cfset this.translateURIDashes = true>
@@ -464,7 +464,7 @@ You can also set it in `app/Config/Routes.cfm` with the method `set404Override()
 <cfset routes.set404Override("App\Controllers\Errors::show404")>
 ```
 
-The method gets the message of the error as its argument. The status code of the response is set to `404`. To change it, see [Response](../outgoing/response.md).
+Give the full class name. The default namespace is not added to this value. The method gets the message of the error as its argument. The status code of the response is set to `404`. To change it, see [Response](../outgoing/response.md).
 
 !!! warning "Not ported yet"
     The value cannot be a function.
@@ -472,7 +472,7 @@ The method gets the message of the error as its argument. The status code of the
 ### Route Processing by Priority
 
 !!! warning "Not ported yet"
-    The `prioritize` option is in `app/Config/Routing.cfc`, but it is not read.
+    The `prioritize` option is read from `app/Config/Routing.cfc`, but it has no effect.
 
 ### Multiple URI Segments as One Parameter
 
