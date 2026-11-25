@@ -119,8 +119,7 @@ If you have an **example/blog** directory that is mapped to the namespace `Examp
 you could retrieve view files as if they were namespaced also.
 
 Following this example, you could load the **blog_view.cfm** file from **example/blog/Views** by
-prepending the namespace to the view name (specifying the end directory `Views` as in
-`Example\Blog\Views\` is not required):
+prepending the namespace to the view name:
 
 ```cfm
 <cfreturn view("Example\Blog\Views\blog_view")>

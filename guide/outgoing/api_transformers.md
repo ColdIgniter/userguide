@@ -66,7 +66,17 @@ The `toArray()` function receives the resource (a struct or a component) and def
 ### Generating Transformer Files
 
 !!! warning "Not ported yet"
-    The `make:transformer` command (`Commands/Generators/TransformerGenerator.php`) does not exist, because there is no command line. Create the file by hand in `app/Transformers/`.
+    The `make:transformer` command does not exist, because there is no command line. Create the file by hand in `app/Transformers/`.
+
+#### Command Options
+
+!!! warning "Not ported yet"
+    The options `--suffix`, `--namespace` and `--force` do not exist, because the command does not exist.
+
+#### Subdirectories
+
+!!! warning "Not ported yet"
+    Making a transformer in a sub-folder with the command does not exist. Make the folder by hand in `app/Transformers/`, and use its name in the component path, as in `new_("App\Transformers\Api\V1\User")`.
 
 ### Using Transformers in Controllers
 
@@ -308,7 +318,7 @@ You can also transform plain structs:
 ### Transforming Objects
 
 !!! warning "Not ported yet"
-    Casting any object to an array (`BaseTransformer.php`) is not ported. A component that has a `toArray()` function is transformed as described under Transforming Entities, and any other value goes to your `toArray()` function as it is.
+    Casting any object to an array is not ported. A component that has a `toArray()` function is transformed as described under Transforming Entities, and any other value goes to your `toArray()` function as it is.
 
 ### Using toArray() Only
 

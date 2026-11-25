@@ -27,7 +27,7 @@ Then you can use any of the three standard methods that it provides:
 `render()`, `setVar()` and `setData()`.
 
 !!! warning "Not ported yet"
-    `renderString()`, which renders a piece of a view from a string, is not ported (`View::renderString()` in CodeIgniter, **system/View/View.php**).
+    `renderString()`, which renders a piece of a view from a string, is not ported (`View::renderString()` in CodeIgniter).
 
 ## What It Does
 
@@ -76,7 +76,7 @@ number of different calls together in a chain:
 ## Escaping Data
 
 !!! warning "Not ported yet"
-    Escaping in `setVar()` and `setData()` through the last parameter (the `context`) is not ported (`esc(data, context)` in **system/View/View.php**). The parameter is accepted and ignored: the data is never escaped when it is set.
+    Escaping in `setVar()` and `setData()` through the last parameter (the `context`) is not ported (`esc(data, context)`). The parameter is accepted and ignored: the data is never escaped when it is set.
 
 Escape the data inside the view with the `esc()` function. The first parameter is the value to escape. The second parameter is the
 context to escape the data for (see below). Lists and structs are escaped value by value:
@@ -94,7 +94,7 @@ context as the second parameter. Valid contexts are `"html"`, `"js"`, `"url"` an
 
 ```cfm
 <cfoutput>
-<a href="#esc(url, "url")#" data-foo="#esc(bar, "attr")#">Some Link</a>
+<a href="#esc(link, "url")#" data-foo="#esc(bar, "attr")#">Some Link</a>
 
 <script>
     var siteName = '#esc(siteName, "js")#';
@@ -109,15 +109,14 @@ context as the second parameter. Valid contexts are `"html"`, `"js"`, `"url"` an
 
 Several options can be passed in a struct to the `render()` method:
 
-- `options`
+- `debug` - can be set to false to disable the addition of debug code for
+  the Debug Toolbar.
 
-    - `debug` - can be set to false to disable the addition of debug code for
-      the Debug Toolbar.
-- `saveData` - true if the view data parameters should be retained for
-  subsequent calls.
+The third argument of `render()`, `saveData`, is true if the view data parameters should be retained for
+subsequent calls. It is not a key of the options struct. Only `view()` takes a `saveData` key in its options, and it passes it on as this argument.
 
 !!! warning "Not ported yet"
-    The options `cache` and `cache_name` are not ported (**system/View/View.php**). They are ignored.
+    The options `cache` and `cache_name` are not ported. They are ignored.
 
 ## Class Reference
 

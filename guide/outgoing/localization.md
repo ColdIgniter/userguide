@@ -49,7 +49,7 @@ When this is on, the system negotiates the correct language from the array of lo
 #### In Routes
 
 !!! warning "Not ported yet"
-    The `{locale}` placeholder in a route (`Router/Router.php`) and the `useSupportedLocalesOnly()` function of the route collection (`Router/RouteCollection.php`) are not ported. Use content negotiation, or set the locale yourself as shown below.
+    The `{locale}` placeholder in a route and the `useSupportedLocalesOnly()` function of the route collection are not ported. Use content negotiation, or set the locale yourself as shown below.
 
 ### Setting the Current Locale
 
@@ -194,7 +194,7 @@ You can also use names to keep things clear:
 A placeholder that has no matching value stays as it is written.
 
 !!! warning "Not ported yet"
-    The `MessageFormatter` of the intl extension is not ported (`Language/Language.php`). Only `{name}` and `{0}` are replaced. The formats such as `{0, number, integer}`, `{0, number, currency}`, `{0, number, percent}`, dates, times, `spellout`, `ordinal`, `duration` and `select` are not known and stay as they are written. For plurals, only the English form `{n, plural, =1{# year} other{# years}}` is known. It uses the English rule (one for 1, else other), and a `#` is the number.
+    The `MessageFormatter` of the intl extension is not ported. Only `{name}` and `{0}` are replaced. The formats such as `{0, number, integer}`, `{0, number, currency}`, `{0, number, percent}`, dates, times, `spellout`, `ordinal`, `duration` and `select` are not known and stay as they are written. For plurals, only the English form `{n, plural, =1{# year} other{# years}}` is known. It uses the English rule (one for 1, else other), and a `#` is the number.
 
 #### Specifying Locale
 
@@ -250,9 +250,9 @@ The framework has its system messages in **system/Language/en**. If you want to 
 ### Generating Translation Files via Command
 
 !!! warning "Not ported yet"
-    The `lang:find` command (`Commands/Translation/LocalizationFinder.php`) does not exist, because there is no command line. Write the language files by hand.
+    The `lang:find` command does not exist, because there is no command line. Write the language files by hand.
 
 #### Synchronization Translation Files via Command
 
 !!! warning "Not ported yet"
-    The `lang:sync` command (`Commands/Translation/LocalizationSync.php`) does not exist, because there is no command line. To make the files for another language, copy the files of the finished language and translate them by hand.
+    The `lang:sync` command does not exist, because there is no command line. To make the files for another language, copy the files of the finished language and translate them by hand.

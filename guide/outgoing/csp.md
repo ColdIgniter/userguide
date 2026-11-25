@@ -157,6 +157,8 @@ This is hard to do by hand, and it is most secure when the nonce is made on the 
 </style>
 ```
 
+When CSP is off, the default placeholders are removed from the body, so the tags are valid. A placeholder that you renamed is removed only when the policy object exists.
+
 !!! warning
     If an attacker injects a string like `<script {csp-script-nonce}>`, it can become the real nonce attribute with this function. You can change the placeholder with the `scriptNonceTag` and `styleNonceTag` settings in **app/Config/ContentSecurityPolicy.cfc**.
 

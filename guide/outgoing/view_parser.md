@@ -56,7 +56,7 @@ Then you can use any of the three standard rendering methods that it provides:
 parses a string you give it.
 
 !!! warning "Not ported yet"
-    Setting the delimiters directly through `setDelimiters()` is not ported (**system/View/Parser.php**). The braces `{` and `}` are fixed.
+    Setting the delimiters directly through `setDelimiters()` is not ported. The braces `{` and `}` are fixed.
 
 !!! important
     The `Parser` never runs CFML tags in a template, and literal `<?` and `?>` are turned into entities.
@@ -65,7 +65,7 @@ parses a string you give it.
 
 !!! note "Difference from CodeIgniter"
     In CodeIgniter the conditions are run as PHP code, and the guide tells you to restrict them. Here the evaluator is always restricted, so
-    there is no `restrictConditionals` option.
+    the `restrictConditionals` option and the `restrictParserConditionals` setting are not ported and have no effect (see [Restricting Conditionals](#restricting-conditionals)).
 
 ### What It Does
 
@@ -115,7 +115,7 @@ The `render()` method takes a struct of options as its second argument, and `sav
     the default is the `saveData` setting of **app/Config/View.cfc**
 
 !!! warning "Not ported yet"
-    The options `cache`, `cache_name`, `cascadeData` and `restrictConditionals` are not ported (**system/View/Parser.php**). The `renderString()` method they also apply to is not ported either.
+    The options `cache`, `cache_name`, `cascadeData` and `restrictConditionals` are not ported. The `renderString()` method they also apply to is not ported either.
 
 ## Substitution Variations
 
@@ -134,9 +134,10 @@ has a simple value (a string or a number), as in this example:
 <cfreturn service("parser").setData(data).render("blog_template")>
 ```
 
-Substitution values are treated as data, not as template code. Any Parser
-syntax within a value is rendered literally and is not processed by later
-substitutions.
+Substitution values are treated as data, not as template code. A value is not read as a condition or as a pair,
+and `{noparse}` blocks are never parsed. There is one exception: the text that a variable pair makes is read once more
+for single substitutions, so a `{x}` inside the value of a row is replaced by the value `x` of the template data.
+Remove or encode the braces of a value in a row if it can come from a user.
 
 The `Parser` takes substitution a lot further with "variable pairs",
 used for looping, and with some advanced
@@ -149,7 +150,7 @@ When the parser executes, it will generally
 - handle the remaining single substitutions
 
 A value in braces is escaped for HTML. To show a value as it is, write it between exclamation marks, as in `{! blog_body !}`, see [Escaping Data](#escaping-data).
-Spaces just inside the braces are ignored, so `{ blog_title }` and `{blog_title}` are the same.
+Spaces just inside the braces of a single value are ignored, so `{ blog_title }` and `{blog_title}` are the same. This is not so for the tags of a variable pair: write them exactly as `{items}` and `{/items}`.
 
 ### Loop Substitutions
 
@@ -216,12 +217,12 @@ Inside the pair, only the data of the row is known. The values of the outer temp
 If your "pair" data is coming from a database result, make a list of structs from it first, as your model returns it.
 
 !!! warning "Not ported yet"
-    Looping over a list of objects (the `asArray()` method of an object, and the Entity classes, in **system/View/Parser.php**) is not ported. Pass structs.
+    Looping over a list of objects (the `asArray()` method of an object, and the Entity classes,) is not ported. Pass structs.
 
 ### Nested Substitutions
 
 !!! warning "Not ported yet"
-    A nested substitution, where the value is a struct of simple values (a record) that is read inside a pair of the same name, is not ported (**system/View/Parser.php**). A pair works with a list of structs, or a struct of structs, only.
+    A nested substitution, where the value is a struct of simple values (a record) that is read inside a pair of the same name, is not ported. A pair works with a list of structs, or a struct of structs, only.
 
 ### Comments
 
@@ -241,7 +242,7 @@ comments in a `{#  #}` symbols.
 ### Cascading Data
 
 !!! warning "Not ported yet"
-    The `cascadeData` option is not ported (**system/View/Parser.php**). The row of a pair never sees the other values of the template.
+    The `cascadeData` option is not ported. The row of a pair never sees the other values of the template.
 
 ### Preventing Parsing
 
@@ -267,7 +268,7 @@ blocks must be closed with an `endif` tag. Blocks can be nested:
 
 All variables used within if statements must have been previously set with the same name, and are written with a leading `$`.
 A condition is made of one or two operands. An operand is a variable (`$name`), a string in quotes, a number, `true`, `false` or `[]` (an empty list).
-The comparison operators are `==`, `!=`, `===` and `!==`. An operand on its own is true unless it is an empty string, `0`, `false`, or an empty list or struct.
+The comparison operators are `==`, `!=`, `===` and `!==`. The operators `===` and `!==` compare loosely, exactly as `==` and `!=` do. An operand on its own is true unless it is an empty string, `0`, `false`, or an empty list or struct.
 
 ```text
 {if $role == 'admin'}
@@ -296,12 +297,12 @@ The value of `$role` is checked by the condition; it is never run as code.
 #### Restricting Conditionals
 
 !!! warning "Not ported yet"
-    The `restrictConditionals` option and the `restrictParserConditionals` setting (CodeIgniter 4.7.5, **system/View/Parser.php**) have no effect. They are not needed, because conditionals are never run as code.
+    The `restrictConditionals` option and the `restrictParserConditionals` setting (CodeIgniter 4.7.5) are not ported and have no effect. They are not needed, because conditionals are never run as code.
 
 #### Changing the Conditional Delimiters
 
 !!! warning "Not ported yet"
-    `setConditionalDelimiters()` is not ported (**system/View/Parser.php**). Conditionals always use `{ if }`. To keep JavaScript with braces from being read as a tag, put it between `{noparse}` and `{/noparse}`.
+    `setConditionalDelimiters()` is not ported. Conditionals always use `{ if }`. To keep JavaScript with braces from being read as a tag, put it between `{noparse}` and `{/noparse}`.
 
 ### Escaping Data
 
@@ -318,7 +319,7 @@ To disable automatic escaping for a substitution, add exclamation marks to its d
 ### Filters
 
 !!! warning "Not ported yet"
-    Filters (`{ value|filter }`, the `filters` setting of **app/Config/View.cfc**, and the provided filters, in **system/View/Parser.php** and **system/View/Filters.php**) are not ported. The setting is listed in the config, but the code ignores it.
+    Filters (`{ value|filter }`, the `filters` setting of **app/Config/View.cfc**, and the provided filters) are not ported. The setting is listed in the config, but the code ignores it.
 
 #### Provided Filters
 
@@ -333,12 +334,12 @@ To disable automatic escaping for a substitution, add exclamation marks to its d
 ### Parser Plugins
 
 !!! warning "Not ported yet"
-    Plugins (`{+ name +}` tags, the `plugins` setting of **app/Config/View.cfc**, and the provided plugins, in **system/View/Parser.php** and **system/View/Plugins.php**) are not ported. The setting is listed in the config, but the code ignores it. A `{+ ... +}` tag stays in the output as written.
+    Plugins (`{+ name +}` tags, the `plugins` setting of **app/Config/View.cfc**, and the provided plugins) are not ported. The setting is listed in the config, but the code ignores it. A `{+ ... +}` tag stays in the output as written.
 
 #### Provided Plugins
 
 !!! warning "Not ported yet"
-    See [Parser Plugins](#parser-plugins): none of the provided plugins (current_url, previous_url, siteURL, mailto, safe_mailto, lang, validation_errors, route, csp_script_nonce, csp_style_nonce) exists. The CSP nonce placeholders still work, see [Content Security Policy](csp.md).
+    See [Parser Plugins](#parser-plugins): none of the provided plugins (current_url, previous_url, siteURL, mailto, safe_mailto, lang, validation_errors, route, csp_script_nonce, csp_style_nonce) exists. The CSP nonce placeholders still work, see [Content Security Policy](csp.md). When CSP is off, the placeholders `{csp-style-nonce}` and `{csp-script-nonce}` are removed from the response body.
 
 #### Registering a Plugin
 
@@ -354,7 +355,7 @@ If you do not include a substitution parameter that is referenced in your
 template, the original pseudo-variable is shown in the result. This is also true for a value that is a list or a struct
 used as a single value.
 
-If you provide a simple value when a list is expected, i.e., for a variable pair, the pair is skipped and the tags stay in the result as written.
+If you provide a simple value when a list is expected, i.e., for a variable pair, the pair is skipped. The opening tag `{key}` is replaced by the value, as a single substitution, and the closing tag `{/key}` stays in the result as written.
 
 ### View Fragments
 

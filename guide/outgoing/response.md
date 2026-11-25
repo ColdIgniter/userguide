@@ -36,7 +36,7 @@ as the second parameter of the `setStatusCode()` method:
 ```
 
 !!! warning "Not ported yet"
-    `setJSON()` and `setXML()`, which turn a struct into JSON or XML and set the content type (**system/HTTP/Response.php**), are not ported. For a JSON or XML body in a controller that extends `ResourceController`, use `respond()`, see [API Responses](api_responses.md). Otherwise set the body and the content type by hand with `setBody()` and `setContentType()`.
+    `setJSON()` and `setXML()`, which turn a struct into JSON or XML and set the content type, are not ported. For a JSON or XML body in a controller that extends `ResourceController`, use `respond()`, see [API Responses](api_responses.md). Otherwise set the body and the content type by hand with `setBody()` and `setContentType()`.
 
 ### Setting Headers
 
@@ -117,10 +117,13 @@ When you want to pass a URI path (relative to baseURL), use `redirect().to()`:
     use the `method` parameter: `redirect().to("admin/home", "", "refresh")`.
     The second parameter is the status code, and an empty string means the default.
 
+!!! note
+    With the method `auto` (the default), a redirect on Microsoft IIS sends a `Refresh` header in place of a `Location` header, as CodeIgniter does. On other servers it sends `Location`.
+
 ### Redirect to a Defined Route
 
 !!! warning "Not ported yet"
-    `redirect().route()` and `redirect("route_name")` are not ported (reverse routing, **system/Router/RouteCollection.php**). They always throw an `HTTPException` with "The route for ... cannot be found". Use `redirect().to()` with the path.
+    `redirect().route()` and `redirect("route_name")` are not ported (reverse routing). They always throw an `HTTPException` with "The route for ... cannot be found". Use `redirect().to()` with the path.
 
 ### Redirect Back
 
@@ -134,8 +137,10 @@ When you want to redirect back, use `redirect().back()`:
 
 !!! note
     `redirect().back()` is not the same as browser "back" button.
-    It takes a visitor to "the last page viewed during the Session" when the Session is available.
-    If the Session hasn't been loaded, or is otherwise unavailable, then a sanitized version of the HTTP referer will be used.
+    It takes a visitor to the HTTP referer of the request, or to the site root (`site_url("/")`) when the request has no referer.
+
+!!! note "Difference from CodeIgniter"
+    `redirect().back()` never uses the Session. CodeIgniter first uses the last page that the Session remembers, and the HTTP referer only when the Session has none. ColdIgniter does not remember pages in the Session. It also does not sanitize the referer (`FILTER_SANITIZE_URL` is not ported), so the value comes from the client as it is.
 
 ### Redirect with Cookies
 
@@ -183,7 +188,7 @@ If you don't know HTTP status code for redirection, it is recommended to read
 ## Force File Download
 
 !!! warning "Not ported yet"
-    `download()` and the `DownloadResponse` class (`setFileName()`, `inline()`, **system/HTTP/Response.php**) are not ported. To send a file by hand, set the `Content-Disposition` and `Content-Type` headers and the body yourself.
+    `download()` and the `DownloadResponse` class (`setFileName()`, `inline()`) are not ported. To send a file by hand, set the `Content-Disposition` and `Content-Type` headers and the body yourself.
 
 ### Open File in Browser
 
@@ -204,7 +209,7 @@ By default, all response objects sent through ColdIgniter have HTTP caching turn
 circumstances are too varied for us to be able to create a good default other than turning it off.
 
 !!! warning "Not ported yet"
-    `setCache()` (and `setLastModified()`, **system/HTTP/Response.php**) are not ported. Set the headers yourself, for example:
+    `setCache()` (and `setLastModified()`) are not ported. Set the headers yourself, for example:
 
 ```cfm
 <cfset this.response.setHeader("Cache-Control", "public, max-age=3600")>
@@ -293,7 +298,7 @@ Returns the current reason phrase for this response. If no status has been set, 
 ### setDate
 
 !!! warning "Not ported yet"
-    `setDate()` is not ported, and no `Date` header is sent (**system/HTTP/Response.php**).
+    `setDate()` is not ported, and no `Date` header is sent.
 
 ### setContentType
 
@@ -376,18 +381,18 @@ Using this method, a struct is passed as the first
 parameter:
 
 ```cfm
-<cfset cookie = StructNew()>
-<cfset cookie["name"] = "The Cookie Name">
-<cfset cookie["value"] = "The Value">
-<cfset cookie["expire"] = "86500">
-<cfset cookie["domain"] = ".some-domain.com">
-<cfset cookie["path"] = "/">
-<cfset cookie["prefix"] = "myprefix_">
-<cfset cookie["secure"] = true>
-<cfset cookie["httponly"] = false>
-<cfset cookie["samesite"] = "Lax">
+<cfset cookieData = StructNew()>
+<cfset cookieData["name"] = "The Cookie Name">
+<cfset cookieData["value"] = "The Value">
+<cfset cookieData["expire"] = "86500">
+<cfset cookieData["domain"] = ".some-domain.com">
+<cfset cookieData["path"] = "/">
+<cfset cookieData["prefix"] = "myprefix_">
+<cfset cookieData["secure"] = true>
+<cfset cookieData["httponly"] = false>
+<cfset cookieData["samesite"] = "Lax">
 
-<cfset this.response.setCookie(cookie)>
+<cfset this.response.setCookie(cookieData)>
 ```
 
 Only the `name` and `value` are required. To delete a cookie set it with the
@@ -500,7 +505,7 @@ If no `name` is given, returns all the `Cookie` objects of the response.
 Example:
 
 ```cfm
-<cfset cookie = this.response.getCookie("name")>
+<cfset cookieData = this.response.getCookie("name")>
 ```
 
 ### getCookies
