@@ -20,7 +20,7 @@ pip install -r requirements.txt
 zensical build --clean
 ```
 
-The site is written to `dist/user_guide/`. The folder `user_guide/` is there on purpose: the Worker serves a file at the same path as it has in `dist/`.
+The site is written to `dist/user_guide/`. Every page is a file with its own address, as in the CodeIgniter guide: `installation/index.html`, `general/controllers.html`. The tracked file `dist/_redirects` sends a folder address to its `index.html`; add two lines there for every new folder that has an `index.md`. The folder `user_guide/` is there on purpose: the Worker serves a file at the same path as it has in `dist/`.
 
 ## Look at it on your own machine
 

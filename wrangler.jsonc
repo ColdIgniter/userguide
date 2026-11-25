@@ -2,17 +2,21 @@
 // no script. dist/ holds the folder user_guide/, so a file has the same
 // path as its address: https://coldigniter.dev/user_guide/...
 {
-	"name": "userguide",
+	"name": "coldigniter-userguide",
 	"compatibility_date": "2026-11-01",
 	"assets": {
 		"directory": "./dist",
-		"html_handling": "auto-trailing-slash",
+		// Every page is served at the address of its file, with .html, as in
+		// the CodeIgniter guide: /user_guide/installation/index.html. With
+		// this setting a folder address (/user_guide/) serves nothing, so
+		// dist/_redirects sends each folder to its index.html.
+		"html_handling": "none",
 		"not_found_handling": "404-page"
 	},
-	// Also served at <name>.<account>.workers.dev/user_guide/ for the first
-	// tests. Set this to false when the route of coldigniter.dev works, so
-	// that there is one public copy only.
-	"workers_dev": true,
+	// Not served at <name>.<account>.workers.dev, so that there is one
+	// public copy only: the route of coldigniter.dev below.
+	"workers_dev": false,
+	"preview_urls": false,
 	// Only /user_guide of the domain goes to this Worker. Every other
 	// address of coldigniter.dev stays with the main site.
 	"routes": [

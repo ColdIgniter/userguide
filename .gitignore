@@ -1,5 +1,6 @@
-# Build output
-/dist/
+# Build output. dist/_redirects is not built: it is a tracked file.
+/dist/*
+!/dist/_redirects
 /.cache/
 
 # Wrangler

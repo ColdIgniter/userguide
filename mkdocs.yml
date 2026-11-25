@@ -9,6 +9,9 @@ site_url: https://coldigniter.dev/user_guide/
 docs_dir: guide
 site_dir: dist/user_guide
 strict: true
+# Every page is a file with its own address, as in the CodeIgniter guide:
+# installation/index.html, general/controllers.html.
+use_directory_urls: false
 
 theme:
   name: material
