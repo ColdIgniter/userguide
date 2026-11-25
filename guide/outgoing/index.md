@@ -1,6 +1,16 @@
 # Building Responses
 
-How a controller builds what the client gets back.
+View components are used to build what is returned to the user.
 
-!!! note "Not written yet"
-    This page is not written yet.
+- [Views](views.md)
+- [View Renderer](view_renderer.md)
+- [View Layouts](view_layouts.md)
+- [View Cells](view_cells.md)
+- [View Parser](view_parser.md)
+- [View Decorators](view_decorators.md)
+- [HTML Table Class](table.md)
+- [HTTP Responses](response.md)
+- [API Responses](api_responses.md)
+- [API Resources](api_transformers.md)
+- [Content Security Policy](csp.md)
+- [Localization](localization.md)
