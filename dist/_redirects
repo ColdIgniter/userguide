@@ -39,3 +39,5 @@
 /user_guide/outgoing/ /user_guide/outgoing/index.html 302
 /user_guide/testing /user_guide/testing/index.html 302
 /user_guide/testing/ /user_guide/testing/index.html 302
+# A page that moved keeps its old address.
+/user_guide/general/controllers.html /user_guide/incoming/controllers.html 301
