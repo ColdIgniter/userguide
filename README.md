@@ -8,7 +8,9 @@ The pages are Markdown files in `guide/`. [Zensical](https://zensical.org/) buil
 
 | File | What it is |
 |---|---|
-| `guide/` | The pages. |
+| `guide/` | The pages, in the same folders and with the same file names as the CodeIgniter 4 guide. |
+| `guide/images/` | The logo (`logo.svg`, and `logo-dark.svg` for the dark colours) and the favicon. |
+| `guide/stylesheets/extra.css` | The colours and the look of the header and the menu. |
 | `mkdocs.yml` | The settings of the site and the menu. |
 | `requirements.txt` | The version of the generator. |
 | `wrangler.jsonc` | The settings of the Worker. |
@@ -46,10 +48,17 @@ By hand:
 npx wrangler@4 deploy
 ```
 
+## The pages
+
+The menu in `mkdocs.yml` follows the table of contents of the CodeIgniter 4 guide: the same sections, in the same order, with the same page titles and file paths. So `incoming/routing` in their guide is `incoming/routing.html` here. "CodeIgniter" is "ColdIgniter" in the titles.
+
+A page that is not written yet is a stub: the title, one sentence and the note "This page is not written yet.". A page for a part of CodeIgniter 4 that is not ported yet says "Not ported yet". Left out on purpose: the change logs and upgrade pages of single CodeIgniter versions (the page "Change logs" points to `CHANGELOG.md` of ColdIgniter), and pages about Composer.
+
 ## A new page
 
 1. Add a Markdown file in `guide/`.
 2. Add it to `nav` in `mkdocs.yml`.
+3. For a new folder with an `index.md`, add the two lines to `dist/_redirects`.
 
 ## License
 

@@ -1,4 +1,4 @@
-# Server requirements
+# Server Requirements
 
 ColdIgniter is written for ColdFusion MX 6.1. A default install is enough: apart from the data source of your database, no setting in the ColdFusion Administrator has to be changed to run it.
 

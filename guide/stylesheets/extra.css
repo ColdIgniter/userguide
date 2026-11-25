@@ -13,3 +13,67 @@
 	--md-accent-fg-color: #85a3e0;
 	--md-typeset-a-color: #85a3e0;
 }
+
+/* The wordmark is the site name: show it wide in the header and the menu.
+   The header is light in both schemes, so the dark scheme gets a lighter blue. */
+.md-header__button.md-logo img,
+.md-nav__title .md-logo img {
+	height: 1.7rem;
+	width: auto;
+}
+
+[data-md-color-scheme="slate"] .md-logo img {
+	content: url("../images/logo-dark.svg");
+}
+
+.md-header__ellipsis > .md-header__topic:first-child {
+	display: none;
+}
+
+.md-header__title {
+	margin-left: .4rem;
+}
+
+/* Section titles in the menu, as in the CodeIgniter guide: small and bold. */
+.md-nav--primary > .md-nav__list > .md-nav__item--section > .md-nav__link {
+	color: var(--md-primary-fg-color);
+	font-weight: 700;
+	text-transform: uppercase;
+	font-size: .65rem;
+	letter-spacing: .04em;
+}
+
+[data-md-color-scheme="slate"] .md-nav--primary > .md-nav__list > .md-nav__item--section > .md-nav__link {
+	color: #85a3e0;
+}
+
+.md-typeset h1 {
+	color: var(--md-primary-fg-color);
+	font-weight: 700;
+}
+
+[data-md-color-scheme="slate"] .md-typeset h1 {
+	color: #85a3e0;
+}
+
+/* Warnings are blue too: no orange in the guide. */
+.md-typeset .admonition.warning,
+.md-typeset details.warning {
+	background-color: rgba(51, 102, 204, .08);
+	border-color: var(--md-primary-fg-color);
+}
+
+.md-typeset .warning > .admonition-title,
+.md-typeset .warning > summary {
+	background-color: rgba(51, 102, 204, .1);
+}
+
+.md-typeset .warning > .admonition-title::before,
+.md-typeset .warning > summary::before {
+	background-color: var(--md-primary-fg-color);
+}
+
+.md-typeset .warning > .admonition-title::after,
+.md-typeset .warning > summary::after {
+	color: var(--md-primary-fg-color);
+}
