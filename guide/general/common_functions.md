@@ -5,12 +5,34 @@ ColdIgniter provides a few functions and variables that are globally defined, an
 ## Global Functions
 
 !!! note "Difference from CodeIgniter"
-    ColdFusion MX 6.1 reserves the names of some scopes, so a few functions have a name with a trailing underscore: `request_()` for `request()` and `session_()` for `session()`. The function `response()` does not exist (see below).
+    ColdFusion MX 6.1 reserves the names of some scopes, so a few functions have a name with a trailing underscore: `request_()` for `request()`, `session_()` for `session()` and `cookie_()` for `cookie()`.
 
 ### Service Accessors
 
 !!! warning "Not ported yet"
-    These functions do not exist: `cookie()`, `cookies()`, `model()`, `response()`, `timer()`, `view_cell()` and `single_service()`. Use `service("response")` and `service("timer")` for the shared instances, and `service("name")` for any other service. For a model, see [Factories](../concepts/factories.md).
+    The function `view_cell()` does not exist, because view cells are not ported.
+
+#### cookie_()
+
+`cookie_(name, value, options)` is a convenience function that creates a new `Cookie` instance. The name has a trailing underscore because `cookie` is a scope in CFML. `options` is a structure with the settings of the cookie:
+
+```cfm
+<cfset options = StructNew()>
+<cfset options.expires = 3600>
+<cfset rememberCookie = cookie_("remember_me", "yes", options)>
+```
+
+For more details, see [Cookies](../libraries/cookies.md).
+
+#### cookies()
+
+`cookies(cookies, getGlobal)` returns the `CookieStore` instance. `getGlobal` is `true` by default, and then the global cookie store held by the response is returned. With `false` it builds a new store with the cookies you pass in `cookies`:
+
+```cfm
+<cfset store = cookies()>
+```
+
+For more details, see [Cookies](../libraries/cookies.md).
 
 #### cache()
 
@@ -48,10 +70,13 @@ It is especially useful in conjunction with **.env** files for setting values th
 
 If `data` is a string, then it simply escapes and returns it. If `data` is an array or a structure, then it loops over it, escaping each value and returning the copy.
 
-Valid context values: `html` (the default), `js`, `url`, `attr` and `raw`.
+Valid context values: `html` (the default), `js`, `css`, `url`, `attr` and `raw`.
 
-!!! warning "Not ported yet"
-    The context `css` and the `encoding` argument are not ported, because the Escaper library is not ported. The context `js` is a small stand-in for it.
+You can pass the name of the character encoding as the third argument. An empty string means UTF-8. The `url` context uses it to encode the data. For the other contexts the encoding is only checked and kept.
+
+```cfm
+<cfoutput><a href="/search?q=#esc(q, "url")#">#esc(title)#</a></cfoutput>
+```
 
 #### helper()
 
@@ -65,6 +90,12 @@ For more information, see [Localization](../outgoing/localization.md).
 
 !!! warning "Not ported yet"
     The formatting of the placeholders is not ported (it uses the intl extension in CodeIgniter).
+
+#### model()
+
+`model(name, getShared, conn)` is a simpler way of getting model instances from [Factories](../concepts/factories.md). `name` is the model class name, and `getShared` (default `true`) tells whether to return the shared instance. `conn` is an optional database connection that is passed to the constructor of the model. It returns an empty string when the class is not found.
+
+See [Factories](../concepts/factories.md#model) for details.
 
 #### old()
 
@@ -88,6 +119,27 @@ For more information, see [Localization](../outgoing/localization.md).
 <cfset foo = session_("foo")>
 ```
 
+#### response()
+
+Returns the shared response object. This function is a wrapper for `service("response")`.
+
+#### single_service()
+
+`single_service(name, param, ...)` provides easy access to any of the [Services](../concepts/services.md) defined in the system. It works like `service()` but always returns a new instance of the class. It gives an empty string when no service has that name. See [single_service()](../concepts/services.md#single_service).
+
+#### timer()
+
+`timer(name, callable)` provides a quick method to benchmark parts of your application. Without a name, it returns the shared timer. With only a name, it starts the timer of that name, or stops it if it is already running. With a callable too, the call is recorded under the name, and the result of the call is returned. A callable is a list of two items, an object and a method name, or the string `"Class::method"`. It is called with no arguments:
+
+```cfm
+<cfset callable = ArrayNew(1)>
+<cfset ArrayAppend(callable, reportService)>
+<cfset ArrayAppend(callable, "build")>
+<cfset result = timer("build_report", callable)>
+```
+
+The timer is the same as `service("timer")`. The Benchmarking page is not written yet.
+
 #### view()
 
 `view(name, data, options)` grabs the current renderer and tells it to render the specified view. It simply provides a convenience method that can be used in controllers and libraries. It returns the output of the view, and does not escape the data: that must be handled by the developer.
@@ -95,6 +147,8 @@ For more information, see [Localization](../outgoing/localization.md).
 Currently, these options are read from the `options` structure:
 
 - `saveData` specifies that data will persist between multiple calls to `view()` within the same request. If you do not want the data to be persisted, specify false.
+- `cache` specifies the number of seconds to cache the view for. See [Caching Views](../outgoing/views.md#caching-views).
+- `cache_name` specifies the cache ID to use. By default the name of the view is used.
 
 ```cfm
 <cfset data = StructNew()>
@@ -104,15 +158,17 @@ Currently, these options are read from the `options` structure:
 <cfset output = view("blog_template", data, options)>
 ```
 
-!!! warning "Not ported yet"
-    The option `cache` (caching a view for a number of seconds) is not ported.
-
 For more details, see the [Views](../outgoing/views.md) and [View Renderer](../outgoing/view_renderer.md) pages.
 
 ### Miscellaneous Functions
 
-!!! warning "Not ported yet"
-    These functions do not exist: `app_timezone()`, `function_usable()`, `is_cli()`, `is_really_writable()` and `is_windows()`.
+#### app_timezone()
+
+Returns the timezone the application has been set to display dates in. This is set in `app/Config/App.cfc`:
+
+```cfm
+<cfset timezone = app_timezone()>
+```
 
 #### csp_script_nonce()
 
@@ -159,7 +215,36 @@ Returns a meta tag with the CSRF information already inserted. An optional argum
 `force_https(duration)` checks to see if the page is currently being accessed via HTTPS. If it is, then nothing happens. If it is not, it sets the HTTP Strict Transport Security header, which instructs modern browsers to automatically modify any HTTP requests to HTTPS requests for `duration` seconds (default 31536000), and builds a redirect to the same URI through HTTPS.
 
 !!! note "Difference from CodeIgniter"
-    The function does not send the redirect itself. It throws `ColdIgniter.HTTP.Exceptions.RedirectException`, which only the `forcehttps` filter catches. If you call `force_https()` directly from a controller, nobody catches the error and the visitor gets an error page (status 500). To force HTTPS, set `forceGlobalSecureRequests` to `true` in **app/Config/App.cfc**; the required `forcehttps` filter then sends the redirect. See [Controller Filters](../incoming/filters.md).
+    The function does not send the redirect itself. It throws `ColdIgniter.HTTP.Exceptions.RedirectException`, and ColdIgniter catches it and sends the redirect, so it also works when you call `force_https()` from a controller. To force HTTPS for the whole site, set `forceGlobalSecureRequests` to `true` in **app/Config/App.cfc**; the required `forcehttps` filter then sends the redirect. See [Controller Filters](../incoming/filters.md).
+
+#### function_usable()
+
+`function_usable(functionName)` returns `true` if a function exists and can be used. It always gives `false` for an empty name or a name that is not a function.
+
+```cfm
+<cfif function_usable("mycustomfunction")>...</cfif>
+```
+
+#### is_cli()
+
+Returns `true` if the application is run through the command line and `false` if not. ColdIgniter is run by the web server only, so it gives `false` on every web request. It only gives `true` when both `REMOTE_ADDR` and `REQUEST_METHOD` are empty.
+
+#### is_really_writable()
+
+`is_really_writable(file)` checks whether a file or a folder can be written to. On Windows it write-tests, by creating a test file in a folder or opening a file for append. Elsewhere it uses `canWrite()` of the Java file object. It gives `true` or `false`.
+
+```cfm
+<cfif is_really_writable(request.WRITEPATH & "cache")>...</cfif>
+```
+
+#### is_windows()
+
+`is_windows(mock)` returns `true` if the application is running on Windows, `false` otherwise. Pass `true` or `false` to mock the answer, for tests. The mock is kept for the rest of the request. Pass an empty string to clear it:
+
+```cfm
+<cfset is_windows(true)>
+<cfset ignored = is_windows("")>
+```
 
 #### log_message()
 
@@ -179,8 +264,11 @@ Context can be used to substitute values in the message string. For full details
 
 See [HTTP Responses](../outgoing/response.md).
 
-!!! warning "Not ported yet"
-    `redirect("name")` and `route()` of the redirect response need reverse routing, which is not ported, so they always throw an error. Use `redirect().to()` with a URI.
+When you pass a [route name](../incoming/routing.md#named-routes) or `Controller::method`, `redirect("name")` finds the route with [reverse routing](../incoming/routing.md#reverse-routing). It is the same as `redirect().route("name")`:
+
+```cfm
+<cfreturn redirect("named_route")>
+```
 
 #### remove_invisible_characters()
 
@@ -198,8 +286,38 @@ Returns the shared request object. This function is a wrapper for `service("requ
 
 `route_to(method, param, ...)` generates a route for you based on a controller::method combination or a route name, taking parameters into effect if provided. It returns a route path (URI path relative to baseURL).
 
-!!! warning "Not ported yet"
-    Reverse routing is not ported, so `route_to()` finds no route. Build links with `site_url()` of the [URL Helper](../helpers/url_helper.md).
+The first argument is either a `Controller::method` or the name of a route. Parameters for the route come next:
+
+```cfm
+<!--- the route is defined as: --->
+<cfset routes.get("users/(:num)/gallery/(:num)", "Galleries::showUserGallery/$1/$2")>
+
+<cfoutput><a href="#route_to("Galleries::showUserGallery", 15, 12)#">View Gallery</a></cfoutput>
+<!--- result: /users/15/gallery/12 --->
+```
+
+With a route name:
+
+```cfm
+<cfset routeOptions = StructNew()>
+<cfset routeOptions["as"] = "user_gallery">
+<cfset routes.get("users/(:num)/gallery/(:num)", "Galleries::showUserGallery/$1/$2", routeOptions)>
+
+<cfoutput><a href="#route_to("user_gallery", 15, 12)#">View Gallery</a></cfoutput>
+```
+
+If the route has a `{locale}` placeholder, the locale can be given as the last parameter:
+
+```cfm
+<cfset routes.get("{locale}/users/(:num)", "Users::show/$1")>
+<cfset path = route_to("Users::show", 15, "en")>
+<!--- result: /en/users/15 --->
+```
+
+!!! important
+    `route_to()` returns a route path, not a full URI. It is relative to the base URL. To get a full URI, use `url_to()` of the URL Helper (its page is not written yet).
+
+See [Reverse Routing](../incoming/routing.md#reverse-routing) and [Named Routes](../incoming/routing.md#named-routes).
 
 #### service()
 

@@ -155,8 +155,25 @@ the folder mapped to it. So the name above looks for **Views/blog_view.cfm** und
 
 ## Caching Views
 
-!!! warning "Not ported yet"
-    The `cache` and `cache_name` options of `view()` are not ported. They are ignored, and the view is rendered on every call.
+You can cache a view with the `view()` function by passing a `cache` option with the number of seconds to cache the view for, in the third parameter:
+
+```cfm
+<cfset options = StructNew()>
+<cfset options.cache = 60>
+<cfreturn view("file_name", data, options)>
+```
+
+By default, the view will be cached using the same name as the view file itself. You can customize this by passing along `cache_name` and the cache ID you wish to use:
+
+```cfm
+<cfset options = StructNew()>
+<cfset options.cache = 60>
+<cfset options.cache_name = "my_cached_view">
+<cfreturn view("file_name", data, options)>
+```
+
+!!! note "Difference from CodeIgniter"
+    The cache ID has the extension `.cfm`, backslashes and slashes taken out, so a view in a folder and one with a similar name can share an ID. Use `cache_name` to tell them apart.
 
 ## Adding Dynamic Data to the View
 

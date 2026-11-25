@@ -117,18 +117,26 @@ To ignore logging on other status codes, you can set the status code to ignore i
 
 ### Exception Design
 
-!!! warning "Not ported yet"
-    The base classes `LogicException` and `RuntimeException`, and the `ExceptionInterface` that all framework exceptions implement, are not ported. A framework error is thrown with its own `type`, which starts with `ColdIgniter.` (for example `ColdIgniter.Exceptions.ConfigException`).
+An exception is not an object in CFML, so the exception classes of CodeIgniter are components that only keep the same names. A framework error is thrown with `cfthrow` and its own `type`, which starts with `ColdIgniter.` (for example `ColdIgniter.Exceptions.ConfigException`).
+
+!!! note "Difference from CodeIgniter"
+    In CodeIgniter the framework exceptions extend the base classes of the language and implement `ExceptionInterface`, so one `catch` of the interface finds all of them. In ColdIgniter the type of each error is its own, and `ExceptionInterface` (**system/Exceptions/ExceptionInterface.cfc**) is an empty base component that nothing extends. Catch the exact type: `<cfcatch type="ColdIgniter.Exceptions.ConfigException">`.
 
 #### LogicException
 
-!!! warning "Not ported yet"
-    There is no `LogicException` class. See Exception Design above.
+`LogicException` represents an error in the program logic. Throw it with the type `ColdIgniter.Exceptions.LogicException`:
+
+```cfm
+<cfthrow type="ColdIgniter.Exceptions.LogicException" message="The value cannot be used here.">
+```
 
 #### RuntimeException
 
-!!! warning "Not ported yet"
-    There is no `RuntimeException` class. See Exception Design above.
+`RuntimeException` is for an error that can only be found at run time. Throw it with the type `ColdIgniter.Exceptions.RuntimeException`:
+
+```cfm
+<cfthrow type="ColdIgniter.Exceptions.RuntimeException" message="The file could not be read.">
+```
 
 The following framework exceptions are also available:
 
@@ -167,13 +175,23 @@ Its `getExitCode()` returns 8.
 
 #### RedirectException
 
-!!! warning "Not ported yet"
-    `ColdIgniter.HTTP.Exceptions.RedirectException` can be thrown, but it cannot carry a URI or a response, and only the `forcehttps` filter catches it. To redirect, return the redirect response: see [HTTP Responses](../outgoing/response.md).
+This exception is used to redirect from anywhere in your code. In CodeIgniter you write `throw new RedirectException($response)`. In ColdIgniter the function `raise()` does the same: give it a redirect response:
+
+```cfm
+<cfset static_("ColdIgniter\HTTP\Exceptions\RedirectException").raise(redirect().to("login"))>
+```
+
+ColdIgniter catches the error, takes the response from it and sends it, so the request ends there. Code that catches the type itself (`ColdIgniter.HTTP.Exceptions.RedirectException`) gets the object with `lastThrown()` and calls `getResponse()`.
+
+!!! note "Difference from CodeIgniter"
+    The type is its own and is not found by a catch of a base type, as explained in Exception Design above.
 
 ## Specify HTTP Status Code in Your Exception
 
-!!! warning "Not ported yet"
-    The `HTTPExceptionInterface` is not ported. The error handler takes the HTTP status code from the `errorcode` of the thrown error for these types only: `ColdIgniter.Exceptions.PageNotFoundException`, `ColdIgniter.HTTP.Exceptions.BadRequestException`, `ColdIgniter.Security.Exceptions.SecurityException` and `ColdIgniter.Honeypot.Exceptions.HoneypotException`. Any other error gives the status code 500.
+In CodeIgniter an exception that implements `HTTPExceptionInterface` has its code used as the HTTP status code. In ColdIgniter the error handler takes the HTTP status code from the `errorcode` of the thrown error for these types: `ColdIgniter.Exceptions.PageNotFoundException`, `ColdIgniter.HTTP.Exceptions.BadRequestException`, `ColdIgniter.HTTP.Exceptions.RedirectException`, `ColdIgniter.Security.Exceptions.SecurityException` and `ColdIgniter.Honeypot.Exceptions.HoneypotException`. Any other error gives the status code 500.
+
+!!! note "Difference from CodeIgniter"
+    `HTTPExceptionInterface` (**system/Exceptions/HTTPExceptionInterface.cfc**) is an empty base component that nothing extends, so you cannot add your own type to the list by implementing it. The types that count are the ones named above. For another status code, set it in your own [exception handler](#defining-the-new-handler).
 
 ## HTTP Status Code and Error Views
 
@@ -198,8 +216,10 @@ You can also create error views for specific HTTP status code. For example, if y
 
 ## Specify Exit Code in Your Exception
 
-!!! warning "Not ported yet"
-    The `HasExitCodeInterface` is not ported, and a request has no exit code. The status code of the response is what the client sees.
+In CodeIgniter an exception that implements `HasExitCodeInterface` gives the exit code of the command. The exception handler of ColdIgniter reads the exit code of the types that have one (`ConfigException`, `FilterException`, `HoneypotException`, `CastException` and `DatabaseException`) through their `getExitCode()`, and gives it to the handler as the argument `exitCode`.
+
+!!! note "Difference from CodeIgniter"
+    A web request has no exit code, so nothing ends with it. The status code of the response is what the client sees. `HasExitCodeInterface` is a base component that only throws, and the list of types is kept in the exception handler.
 
 ## Custom Exception Handlers
 
@@ -229,12 +249,14 @@ The first step is to create a new component which extends `ColdIgniter\Debug\Bas
 
 The built-in handler `ColdIgniter\Debug\ExceptionHandler` shows what a handler does: it sets the status code of the response and the headers, picks a view and puts the rendered page in `request.ColdIgniter.output`.
 
-!!! warning "Not ported yet"
-    The `ExceptionHandlerInterface` does not exist, and nothing in the handler answers in JSON or XML.
+`ColdIgniter\Debug\ExceptionHandlerInterface` is a base component with the one function `handle()`, which only throws. A handler defines it. Nothing in the built-in handler answers in JSON or XML.
+
+!!! note "Difference from CodeIgniter"
+    There are no interfaces on ColdFusion MX 6.1, so a handler extends `BaseExceptionHandler` and does not implement the interface.
 
 ### Configuring the New Handler
 
-Telling ColdIgniter to use your new exception handler component is done in the **app/Config/Exceptions.cfc** configuration file's `handler()` function. It gets the status code and the error. The status code is 500, or the `errorcode` of the four types listed above, so test the `type` of the error to pick a handler for a case of your own:
+Telling ColdIgniter to use your new exception handler component is done in the **app/Config/Exceptions.cfc** configuration file's `handler()` function. It gets the status code and the error. The status code is 500, or the `errorcode` of the types listed above, so test the `type` of the error to pick a handler for a case of your own:
 
 ```cfm
 <cffunction name="handler" access="public" returntype="any" output="no">

@@ -105,7 +105,4 @@ ColdIgniter also provides a [Response class](../outgoing/response.md) that is an
 !!! note "Difference from CodeIgniter"
     There is no `response()` global function and no `Response::HTTP_OK` constant. Get the response with `service("response")` and give the status code as a number.
 
-In addition, the Response class allows you to work with the HTTP cache layer for the best performance. `noCache()` is the one function of it that exists.
-
-!!! warning "Not ported yet"
-    `setCache()`, `setLastModified()` and `setDate()` of the Response class (`HTTP/ResponseTrait.php` in CodeIgniter) are not ported.
+In addition, the Response class allows you to work with the HTTP cache layer for the best performance. `noCache()`, `setCache()`, `setLastModified()` and `setDate()` are the functions for it. See [HTTP Caching](../outgoing/response.md#http-caching).

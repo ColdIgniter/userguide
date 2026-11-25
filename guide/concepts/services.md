@@ -44,10 +44,10 @@ The `timer` is an instance of the Timer class, and if you call `service("timer")
 
 The Services typically return a **shared instance** of the class. A second call with other parameters returns the same instance, and the new parameters are ignored.
 
-The services that exist are: `autoloader`, `cache`, `coldigniter`, `csp`, `encrypter`, `exceptions`, `filters`, `format`, `honeypot`, `incomingrequest`, `language`, `logger`, `migrations`, `negotiator`, `pager`, `parser`, `redirectresponse`, `renderer`, `request`, `response`, `responsecache`, `router`, `routes`, `security`, `session`, `siteurifactory`, `superglobals`, `timer`, `toolbar`, `uri` and `validation`.
+The services that exist are: `autoloader`, `cache`, `coldigniter`, `csp`, `encrypter`, `exceptions`, `filters`, `format`, `honeypot`, `incomingrequest`, `language`, `locator`, `logger`, `migrations`, `negotiator`, `pager`, `parser`, `redirectresponse`, `renderer`, `request`, `response`, `responsecache`, `router`, `routes`, `security`, `session`, `siteurifactory`, `superglobals`, `throttler`, `timer`, `toolbar`, `uri` and `validation`.
 
 !!! warning "Not ported yet"
-    Every service of CodeIgniter that is not in that list is not ported yet. The file `Config/Services.php` of CodeIgniter holds the full list (for example `curlrequest`, `email`, `image`, `throttler`, `typography`, `clirequest` and `locator`).
+    Every service of CodeIgniter that is not in that list is not ported yet. The file `Config/Services.php` of CodeIgniter holds the full list (for example `curlrequest`, `email`, `image`, `typography` and `clirequest`).
 
 !!! note "Difference from CodeIgniter"
     A service name that does not exist gives an empty string. Service names are not case sensitive.
@@ -78,8 +78,16 @@ If the creation function requires additional parameters, they can be passed afte
 
 #### single_service()
 
-!!! warning "Not ported yet"
-    The global function `single_service()` does not exist. To get a new instance, call the function of `static_("Config\Services")` with `false` as the `getShared` argument, as shown above.
+The second function, `single_service()`, works just like `service()` but returns a new instance of the class:
+
+```cfm
+<cfset logger = single_service("logger")>
+```
+
+Like `service()`, it takes the service name and then the parameters of the creation function. It gives an empty string when no service has that name.
+
+!!! note "Difference from CodeIgniter"
+    CFML has no reflection, and a call can skip arguments by name. The parameters you give are put under the names of the parameters of the creation function (read from the component metadata), the `getShared` flag is set to `false`, and the defaults of the function fill the rest.
 
 ## Defining Services
 
@@ -175,5 +183,30 @@ There are occasions where you need to require that only a single instance of a s
 
 ### Resetting Services Cache
 
-!!! warning "Not ported yet"
-    `resetServicesCache()` does not exist, because the services of modules are not discovered.
+When the Services component is first called, early in the start of the framework, the service classes found by discovery are kept in a property, and the property is not updated. If modules are loaded later and they have services, the cache has to be updated.
+
+This is done with `static_("Config\Services").resetServicesCache()`. It clears the cache and makes discovery run again when it is needed:
+
+```cfm
+<cfset static_("Config\Services").resetServicesCache()>
+```
+
+!!! note "Difference from CodeIgniter"
+    Discovery in modules is not ported (see [Service Discovery](#service-discovery)), so the cache holds no module services. The function only clears the list and the `discovered` flag.
+
+### Other Functions of Services
+
+These functions of the Services component are not on the CodeIgniter page of this name. They exist in CodeIgniter too, and are useful in tests:
+
+- `get(key)` returns a service that was already created, or creates it. `has(key)` tells whether a shared instance exists.
+- `set(key, value)` stores a shared instance, and throws `ColdIgniter.Exceptions.InvalidArgumentException` if there is one already. `override(key, value)` stores it in any case.
+- `injectMock(name, mock)` makes the object the shared instance of a service, and keeps it as a mock.
+- `reset(initAutoloader)` throws away all shared instances and mocks. `resetSingle(name)` does it for one service.
+- `serviceExists(name)` gives the name of the class that has the service, or an empty string.
+
+Call them on `static_("Config\Services")`:
+
+```cfm
+<cfset static_("Config\Services").injectMock("timer", mockTimer)>
+<cfset static_("Config\Services").resetSingle("timer")>
+```
