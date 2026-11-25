@@ -134,9 +134,10 @@ has a simple value (a string or a number), as in this example:
 <cfreturn service("parser").setData(data).render("blog_template")>
 ```
 
-Substitution values are treated as data, not as template code. A value is not read as a condition or as a pair,
-and `{noparse}` blocks are never parsed. There is one exception: the text that a variable pair makes is read once more
-for single substitutions, so a `{x}` inside the value of a row is replaced by the value `x` of the template data.
+Substitution values are treated as data, not as template code. A value is not read as a condition,
+and `{noparse}` blocks are never parsed. There is one exception: the text that a variable pair makes is read again,
+for the pairs of the data keys that come later and for single substitutions. So a `{x}` inside the value of a row is replaced
+by the value `x` of the template data, and a `{list}...{/list}` inside it is looped if `list` is a later list in the data.
 Remove or encode the braces of a value in a row if it can come from a user.
 
 The `Parser` takes substitution a lot further with "variable pairs",
@@ -212,12 +213,12 @@ The outer level does not have keys associated with each of the nested "rows".
 
 A struct whose values are structs also works: each value is one row. Any other value in a pair is skipped.
 
-Inside the pair, only the data of the row is known. The values of the outer template are not passed in (see [Cascading Data](#cascading-data)).
+Inside the pair, the row is the data. A single `{x}` that the row does not have is left in place, and then it is replaced by the value `x` of the outer template data. A pair inside the pair sees only the row. A condition inside the pair is checked before the rows are made, with the outer template data, not with the row (see [Conditional Logic](#conditional-logic)). The outer values are not passed to the row as a whole (see [Cascading Data](#cascading-data)).
 
 If your "pair" data is coming from a database result, make a list of structs from it first, as your model returns it.
 
 !!! warning "Not ported yet"
-    Looping over a list of objects (the `asArray()` method of an object, and the Entity classes,) is not ported. Pass structs.
+    Looping over a list of objects (the `asArray()` method of an object, and and the Entity classes) is not ported. Pass structs.
 
 ### Nested Substitutions
 
@@ -242,7 +243,7 @@ comments in a `{#  #}` symbols.
 ### Cascading Data
 
 !!! warning "Not ported yet"
-    The `cascadeData` option is not ported. The row of a pair never sees the other values of the template.
+    The `cascadeData` option is not ported. The outer values are not added to the row. Only a single `{x}` that the row does not have is filled from the outer template data, after the pairs are done. A pair inside the row sees only the row.
 
 ### Preventing Parsing
 
