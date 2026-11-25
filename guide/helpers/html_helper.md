@@ -1,6 +1,6 @@
 # HTML Helper
 
-This page will cover: functions that write HTML tags.
+Functions that write HTML tags.
 
-!!! warning "Not ported yet"
-    This part of CodeIgniter 4 is not ported to ColdIgniter yet. The file `PARITY.md` in the ColdIgniter repository shows what is ported.
+!!! note "Not written yet"
+    This page is not written yet.
