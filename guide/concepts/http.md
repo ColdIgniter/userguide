@@ -49,35 +49,38 @@ The response tells the client what version of the HTTP specification that it's u
 ColdFusion MX 6.1 gives you the `url`, `form` and `cgi` scopes to read a request. ColdIgniter, like most frameworks, abstracts them so that you have a consistent, simple interface to them. The [IncomingRequest class](../incoming/incomingrequest.md) is an object-oriented representation of the HTTP request. It provides everything you need:
 
 ```cfm
-<cfset request_ = request_()>
+<cfset req = request_()>
 
 <!--- the URI path being requested (i.e., about) --->
-<cfset path = request_.getPath()>
+<cfset path = req.getUri().getPath()>
+
+<!--- the same path, from the request itself --->
+<cfset path = req.getPath()>
 
 <!--- Retrieve url and form variables --->
-<cfset foo = request_.getGet("foo")>
-<cfset foo = request_.getPost("foo")>
+<cfset foo = req.getGet("foo")>
+<cfset foo = req.getPost("foo")>
 
 <!--- Retrieve from both the url and form variables --->
-<cfset foo = request_.getVar("foo")>
+<cfset foo = req.getVar("foo")>
 
 <!--- Retrieve JSON from AJAX calls --->
-<cfset json = request_.getJSON()>
+<cfset json = req.getJSON()>
 
 <!--- Retrieve server variables --->
-<cfset host = request_.getServer("SERVER_NAME")>
+<cfset host = req.getServer("SERVER_NAME")>
 
 <!--- Retrieve an HTTP Request header, with case-insensitive names --->
-<cfset header = request_.header("host")>
-<cfset header = request_.header("Content-Type")>
+<cfset header = req.header("host")>
+<cfset header = req.header("Content-Type")>
 
 <!--- Checks the HTTP method --->
-<cfset isGet = request_.is("get")>
-<cfset isPost = request_.is("post")>
+<cfset isGet = req.is("get")>
+<cfset isPost = req.is("post")>
 ```
 
 !!! note "Difference from CodeIgniter"
-    The global function is `request_()`, with an underscore, because `request` is the name of a scope in CFML. There is no `getUri()` on the incoming request: use `getPath()` for the path.
+    The global function is `request_()`, with an underscore, because `request` is the name of a scope in CFML.
 
 The request class does a lot of work in the background for you, that you never need to worry about. The `isAJAX()` and `isSecure()` functions check several different ways to determine the correct answer.
 
@@ -102,4 +105,7 @@ ColdIgniter also provides a [Response class](../outgoing/response.md) that is an
 !!! note "Difference from CodeIgniter"
     There is no `response()` global function and no `Response::HTTP_OK` constant. Get the response with `service("response")` and give the status code as a number.
 
-In addition, the Response class allows you to work with the HTTP cache layer for the best performance.
+In addition, the Response class allows you to work with the HTTP cache layer for the best performance. `noCache()` is the one function of it that exists.
+
+!!! warning "Not ported yet"
+    `setCache()`, `setLastModified()` and `setDate()` of the Response class (`HTTP/ResponseTrait.php` in CodeIgniter) are not ported.

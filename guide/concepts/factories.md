@@ -60,10 +60,9 @@ Two convenience functions are provided in CodeIgniter. They are called the same 
 
 ```cfm
 <cfset appConfig = config("Config\App")>
-<cfset appConfig = config("App")>
 ```
 
-Both lines return the same object, because the short name `App` is looked for in the `Config` namespace. The second argument is `getShared`. Pass `false` to get a new object:
+The shipped code always writes the full name, `Config\App`, and so should you. A short name such as `App` finds the same class, because it is looked for in the `Config` namespace, but keep to one form: do not promise yourself that the two forms share one instance. The second argument is `getShared`. Pass `false` to get a new object:
 
 ```cfm
 <cfset appConfig = config("Config\App", false)>

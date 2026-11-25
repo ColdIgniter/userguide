@@ -454,8 +454,10 @@ APIs and the systems supporting them typically contain complex configurations, m
 - The config for global secure access (`app.forceGlobalSecureRequests`)
 - `force_https()` function
 - [Defined Route Routing](../incoming/routing.md)
-- [Improved auto routing](../incoming/auto_routing_improved.md)
 - [CORS](../libraries/cors.md) filter
+
+!!! warning "Not ported yet"
+    Improved auto routing (`Router/AutoRouterImproved.php` in CodeIgniter) is not ported. Use defined routes.
 
 ### API9:2023 Improper Inventory Management
 

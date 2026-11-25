@@ -30,11 +30,9 @@ Initial configuration is done in **app/Config/Autoload.cfc**. This file contains
 
 The recommended method for organizing your classes is to create one or more namespaces for your application's files.
 
-The `psr4` map in the configuration file allows you to map the namespace to the directory those classes can be found in:
+The `psr4` map in the configuration file allows you to map the namespace to the directory those classes can be found in. The shipped file already creates the map and adds the `App` row (`this.psr4[request.APP_NAMESPACE] = request.APPPATH`). Add your own row below it:
 
 ```cfm
-<cfset this.psr4 = CreateObject("java", "java.util.LinkedHashMap").init()>
-<cfset this.psr4[request.APP_NAMESPACE] = request.APPPATH>
 <cfset this.psr4["Acme\Blog"] = "/path/to/acme/blog">
 ```
 
