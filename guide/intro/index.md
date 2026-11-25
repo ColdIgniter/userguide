@@ -26,3 +26,8 @@ ColdIgniter is right for you if:
 - You like simple solutions over complex ones.
 - You need clear documentation.
 - You need to build a modern web site on ColdFusion MX 6.1.
+
+## In this section
+
+- [Server Requirements](requirements.md)
+- [Credits](credits.md)
