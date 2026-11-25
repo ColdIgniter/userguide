@@ -19,14 +19,14 @@ ColdIgniter provides a few functions and variables that are globally defined, an
 ```cfm
 <cfset options = StructNew()>
 <cfset options.expires = 3600>
-<cfset cookie = cookie_("remember_me", "yes", options)>
+<cfset rememberCookie = cookie_("remember_me", "yes", options)>
 ```
 
 For more details, see [Cookies](../libraries/cookies.md).
 
 #### cookies()
 
-`cookies(cookies, getGlobal)` returns the `CookieStore` instance. With `getGlobal` set to `true` it returns the global cookie store. When it is `false` (the default), it creates a new store with the cookies you pass:
+`cookies(cookies, getGlobal)` returns the `CookieStore` instance. `getGlobal` is `true` by default, and then the global cookie store held by the response is returned. With `false` it builds a new store with the cookies you pass in `cookies`:
 
 ```cfm
 <cfset store = cookies()>
@@ -129,7 +129,7 @@ Returns the shared response object. This function is a wrapper for `service("res
 
 #### timer()
 
-`timer(name, callable)` provides a quick method to benchmark parts of your application. If you pass only a name, it returns the shared timer. If you pass a callable too, the time of that call is recorded under the name, and the result of the call is returned. A callable is a list of two items, an object and a method name, or the string `"Class::method"`. It is called with no arguments:
+`timer(name, callable)` provides a quick method to benchmark parts of your application. Without a name, it returns the shared timer. With only a name, it starts the timer of that name, or stops it if it is already running. With a callable too, the call is recorded under the name, and the result of the call is returned. A callable is a list of two items, an object and a method name, or the string `"Class::method"`. It is called with no arguments:
 
 ```cfm
 <cfset callable = ArrayNew(1)>
@@ -138,7 +138,7 @@ Returns the shared response object. This function is a wrapper for `service("res
 <cfset result = timer("build_report", callable)>
 ```
 
-The timer is the same as `service("timer")`. See [Benchmarking](../testing/benchmark.md).
+The timer is the same as `service("timer")`. The Benchmarking page is not written yet.
 
 #### view()
 
@@ -227,14 +227,14 @@ Returns a meta tag with the CSRF information already inserted. An optional argum
 
 #### is_cli()
 
-Returns `true` if the application is run through the command line and `false` if not. ColdIgniter is run by the web server only, so it always gives `false`.
+Returns `true` if the application is run through the command line and `false` if not. ColdIgniter is run by the web server only, so it gives `false` on every web request. It only gives `true` when both `REMOTE_ADDR` and `REQUEST_METHOD` are empty.
 
 #### is_really_writable()
 
-`is_really_writable(file)` checks whether a file or a folder can be written to. It tries to write a test file in a folder, or opens a file for append, and it gives `true` or `false`.
+`is_really_writable(file)` checks whether a file or a folder can be written to. On Windows it write-tests, by creating a test file in a folder or opening a file for append. Elsewhere it uses `canWrite()` of the Java file object. It gives `true` or `false`.
 
 ```cfm
-<cfif is_really_writable(WRITEPATH & "cache")>...</cfif>
+<cfif is_really_writable(request.WRITEPATH & "cache")>...</cfif>
 ```
 
 #### is_windows()
@@ -315,7 +315,7 @@ If the route has a `{locale}` placeholder, the locale can be given as the last p
 ```
 
 !!! important
-    `route_to()` returns a route path, not a full URI. It is relative to the base URL. To get a full URI, use [url_to()](../helpers/url_helper.md).
+    `route_to()` returns a route path, not a full URI. It is relative to the base URL. To get a full URI, use `url_to()` of the URL Helper (its page is not written yet).
 
 See [Reverse Routing](../incoming/routing.md#reverse-routing) and [Named Routes](../incoming/routing.md#named-routes).
 

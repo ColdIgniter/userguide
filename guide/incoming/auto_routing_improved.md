@@ -254,7 +254,7 @@ If the controller for the URI segment does not exist, and the default controller
 For example, when you have the default controller `Home` in the **app/Controllers/News** folder:
 
 ```cfm
-<cfcomponent output="no" extends="App\Controllers\BaseController">
+<cfcomponent output="no" parent="App\Controllers\BaseController">
 
 	<cffunction name="getIndex" access="public" returntype="string" output="no">
 		<cfargument name="id" type="string" required="no" default="">
