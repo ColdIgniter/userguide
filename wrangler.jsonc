@@ -9,10 +9,10 @@
 		"html_handling": "auto-trailing-slash",
 		"not_found_handling": "404-page"
 	},
-	// Also served at <name>.<account>.workers.dev/user_guide/ for the first
-	// tests. Set this to false when the route of coldigniter.dev works, so
-	// that there is one public copy only.
-	"workers_dev": true,
+	// Not served at <name>.<account>.workers.dev, so that there is one
+	// public copy only: the route of coldigniter.dev below.
+	"workers_dev": false,
+	"preview_urls": false,
 	// Only /user_guide of the domain goes to this Worker. Every other
 	// address of coldigniter.dev stays with the main site.
 	"routes": [
