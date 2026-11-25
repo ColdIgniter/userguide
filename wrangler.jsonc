@@ -2,7 +2,7 @@
 // no script. dist/ holds the folder user_guide/, so a file has the same
 // path as its address: https://coldigniter.dev/user_guide/...
 {
-	"name": "coldigniter-user-guide",
+	"name": "userguide",
 	"compatibility_date": "2026-11-01",
 	"assets": {
 		"directory": "./dist",
