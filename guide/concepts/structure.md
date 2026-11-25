@@ -28,7 +28,7 @@ app/
     Views/          Views make up the HTML that is displayed to the client
 ```
 
-CodeIgniter also has **Filters**, **Language**, **Libraries**, **Models** and **ThirdParty** folders. A fresh ColdIgniter install does not ship them. Create **Models**, **Filters**, **Libraries**, **Helpers** and others when you need them. Models are normally kept in **app/Models**, as in the example application.
+CodeIgniter also has **Filters**, **Helpers**, **Language**, **Libraries**, **Models** and **ThirdParty** folders. A fresh ColdIgniter install does not ship them. Create **Models**, **Filters**, **Libraries**, **Helpers** and others when you need them. Models are normally kept in **app/Models**, as in the example application.
 
 Two files sit at the top of **app**:
 

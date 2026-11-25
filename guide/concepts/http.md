@@ -51,10 +51,10 @@ ColdFusion MX 6.1 gives you the `url`, `form` and `cgi` scopes to read a request
 ```cfm
 <cfset req = request_()>
 
-<!--- the URI path being requested (i.e., about) --->
+<!--- the path of the full URI, with a leading slash; it includes the base folder and the index page when the address has them (i.e., /about) --->
 <cfset path = req.getUri().getPath()>
 
-<!--- the same path, from the request itself --->
+<!--- the path relative to the base URL (i.e., about) --->
 <cfset path = req.getPath()>
 
 <!--- Retrieve url and form variables --->
