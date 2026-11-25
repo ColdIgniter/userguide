@@ -7,7 +7,7 @@
 | `app/` | Your application: configuration, controllers, models and views. |
 | `public/` | The only folder the web server serves. It holds the front controller, `index.cfm`. |
 | `system/` | The framework. Do not change files here. |
-| `writable/` | Files the application writes: cache, logs, sessions and uploads. |
+| `writable/` | Files the application writes: cache, logs and sessions. |
 
 ## Steps
 

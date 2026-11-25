@@ -1,6 +1,6 @@
 # Several servers
 
-One application can run on several servers behind a load balancer. Nothing a request needs may exist on one server only. ColdIgniter keeps no secret and no session in the memory of the server, but three things must be set up on purpose.
+One application can run on several servers behind a load balancer. Everything a request needs must be on every server. ColdIgniter keeps no secret and no session in the memory of the server, but three things must be set up on purpose.
 
 ## Sessions
 

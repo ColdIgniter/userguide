@@ -13,9 +13,16 @@ ColdFusion MX 6.0 is the oldest version that has components (`cfcomponent`, `cff
 
 ## Database
 
-The database driver is `SQLSRV`, for Microsoft SQL Server 2000 SP3.
+The supported database is Microsoft SQL Server 2000 SP3, with the `SQLSRV` driver.
 
-ColdIgniter connects only through a data source of the ColdFusion Administrator. The name of the data source goes in the `DSN` setting of the database group. The login is kept in the data source, not in the application.
+ColdIgniter connects only through a data source of the ColdFusion Administrator. In the database group of `app/Config/Database.cfc`, set two values:
+
+| Setting | Value |
+|---|---|
+| `DBDriver` | `SQLSRV`. The file ships with `MySQLi`, as in CodeIgniter, so you must change it. |
+| `DSN` | The name of the data source. |
+
+The login is kept in the data source, not in the application.
 
 ## Encryption
 
@@ -25,4 +32,10 @@ AES with a 256-bit key is possible when the administrator installs the JCE unlim
 
 ## What ColdIgniter keeps in memory
 
-ColdIgniter does not use the `server` scope. It names one application per site and keeps a few tables there: class names, paths and rules. These tables hold no secret and no value of the `.env` file.
+ColdIgniter stores nothing in the `server` scope, which every site of a ColdFusion server can read. It uses one application scope per site and keeps these things there:
+
+- tables of the framework: class names, paths and rules;
+- with the file cache handler, copies of the cached values that were read last, up to 100 for a site;
+- cached pages, when a controller uses page caching.
+
+The tables of the framework hold no secret and no value of the `.env` file. Cached values and cached pages hold what your application puts in the cache.

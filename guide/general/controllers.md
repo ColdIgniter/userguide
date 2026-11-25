@@ -16,7 +16,7 @@ The starter application has one controller, `app/Controllers/Home.cfc`:
 </cfcomponent>
 ```
 
-The method returns the text of the answer. Here it is the view `app/Views/welcome_message.cfm`.
+The method returns the response. Here it is the view `app/Views/welcome_message.cfm`.
 
 ## The route
 
