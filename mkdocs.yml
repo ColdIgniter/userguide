@@ -36,6 +36,8 @@ theme:
         name: Light colours
   features:
     - navigation.sections
+    # The title of an area opens its index page, and the area folds.
+    - navigation.indexes
     - navigation.top
     - navigation.footer
     - content.code.copy
@@ -55,37 +57,37 @@ markdown_extensions:
 
 nav:
   - Welcome: index.md
-  - Introduction:
-      - Welcome to ColdIgniter: intro/index.md
-      - Server Requirements: intro/requirements.md
-      - Credits: intro/credits.md
-      - License Agreement: license.md
   - Getting Started:
-      - Installation: installation/index.md
-      - Manual Installation: installation/installing_manual.md
-      - Running Your App: installation/running.md
-      - Several servers: installation/several_servers.md
-      - Troubleshooting: installation/troubleshooting.md
-      - Deployment: installation/deployment.md
-      - Upgrading From a Previous Version: installation/upgrading.md
-      - ColdIgniter Repositories: installation/repositories.md
-  - Guides:
-      - Guides: guides/index.md
-      - Build Your First Application:
-          - Build Your First Application: guides/first-app/index.md
-          - Static Pages: guides/first-app/static_pages.md
-          - News Section: guides/first-app/news_section.md
-          - Create News Items: guides/first-app/create_news_items.md
-          - Conclusion: guides/first-app/conclusion.md
-      - Getting Started with REST APIs:
-          - Getting Started with REST APIs: guides/api/index.md
-          - "Auto Routing & Your First Endpoint": guides/api/first-endpoint.md
-          - Creating the Database and Model: guides/api/database-setup.md
-          - Building a RESTful Controller: guides/api/controller.md
-          - Conclusion: guides/api/conclusion.md
+      - Welcome to ColdIgniter:
+          - intro/index.md
+          - Server Requirements: intro/requirements.md
+          - Credits: intro/credits.md
+      - Installation:
+          - installation/index.md
+          - Manual Installation: installation/installing_manual.md
+          - Running Your App: installation/running.md
+          - Several servers: installation/several_servers.md
+          - Troubleshooting: installation/troubleshooting.md
+          - Deployment: installation/deployment.md
+          - Upgrading From a Previous Version: installation/upgrading.md
+          - ColdIgniter Repositories: installation/repositories.md
+      - Guides:
+          - guides/index.md
+          - Build Your First Application:
+              - guides/first-app/index.md
+              - Static Pages: guides/first-app/static_pages.md
+              - News Section: guides/first-app/news_section.md
+              - Create News Items: guides/first-app/create_news_items.md
+              - Conclusion: guides/first-app/conclusion.md
+          - Getting Started with REST APIs:
+              - guides/api/index.md
+              - "Auto Routing & Your First Endpoint": guides/api/first-endpoint.md
+              - Creating the Database and Model: guides/api/database-setup.md
+              - Building a RESTful Controller: guides/api/controller.md
+              - Conclusion: guides/api/conclusion.md
   - "Overview & General Topics":
       - ColdIgniter Overview:
-          - ColdIgniter Overview: concepts/index.md
+          - concepts/index.md
           - Application Structure: concepts/structure.md
           - Models, Views, and Controllers: concepts/mvc.md
           - Autoloading Files: concepts/autoloader.md
@@ -95,7 +97,7 @@ nav:
           - Security Guidelines: concepts/security.md
           - Design and Architectural Goals: concepts/goals.md
       - General Topics:
-          - General Topics: general/index.md
+          - general/index.md
           - Configuration: general/configuration.md
           - ColdIgniter URLs: general/urls.md
           - Helper Functions: general/helpers.md
@@ -109,7 +111,7 @@ nav:
           - Handling Multiple Environments: general/environments.md
   - Request Handling:
       - Controllers and Routing:
-          - Controllers and Routing: incoming/index.md
+          - incoming/index.md
           - URI Routing: incoming/routing.md
           - Controllers: incoming/controllers.md
           - Controller Filters: incoming/filters.md
@@ -122,7 +124,7 @@ nav:
           - HTTP Method Spoofing: incoming/methodspoofing.md
           - RESTful Resource Handling: incoming/restful.md
       - Building Responses:
-          - Building Responses: outgoing/index.md
+          - outgoing/index.md
           - Views: outgoing/views.md
           - View Renderer: outgoing/view_renderer.md
           - View Layouts: outgoing/view_layouts.md
@@ -137,7 +139,7 @@ nav:
           - Localization: outgoing/localization.md
   - Handling Databases:
       - Working with Databases:
-          - Working with Databases: database/index.md
+          - database/index.md
           - "Quick Start: Usage Examples": database/examples.md
           - Database Configuration: database/configuration.md
           - Connecting to a Database: database/connecting.md
@@ -151,18 +153,18 @@ nav:
           - Database Events: database/events.md
           - Database Utilities: database/utilities.md
       - Modeling Data:
-          - Modeling Data: models/index.md
+          - models/index.md
           - "Using ColdIgniter's Model": models/model.md
           - Using Entity Classes: models/entities.md
       - Managing Databases:
-          - Managing Databases: dbmgmt/index.md
+          - dbmgmt/index.md
           - Database Forge: dbmgmt/forge.md
           - Database Migrations: dbmgmt/migration.md
           - Database Seeding: dbmgmt/seeds.md
           - Database Commands: dbmgmt/db_commands.md
   - "Libraries & Helpers":
       - Library Reference:
-          - Library Reference: libraries/index.md
+          - libraries/index.md
           - Caching Driver: libraries/caching.md
           - Cookies: libraries/cookies.md
           - Cross-Origin Resource Sharing (CORS): libraries/cors.md
@@ -185,7 +187,7 @@ nav:
           - User Agent Class: libraries/user_agent.md
           - Validation: libraries/validation.md
       - Helpers:
-          - Helpers: helpers/index.md
+          - helpers/index.md
           - Array Helper: helpers/array_helper.md
           - Cookie Helper: helpers/cookie_helper.md
           - Date Helper: helpers/date_helper.md
@@ -201,7 +203,7 @@ nav:
           - XML Helper: helpers/xml_helper.md
   - Advanced Topics:
       - Testing:
-          - Testing: testing/index.md
+          - testing/index.md
           - Getting Started: testing/overview.md
           - Database: testing/database.md
           - Generating Data: testing/fabricator.md
@@ -214,7 +216,7 @@ nav:
           - Debugging Your Application: testing/debugging.md
           - Session Testing: testing/session_testing.md
       - Command Line Usage:
-          - Command Line Usage: cli/index.md
+          - cli/index.md
           - CLI Overview: cli/cli_overview.md
           - Running Controllers via CLI: cli/cli_controllers.md
           - Spark Commands: cli/spark_commands.md
@@ -224,12 +226,12 @@ nav:
           - CLI Signals: cli/cli_signals.md
           - CLIRequest Class: cli/cli_request.md
       - Extending ColdIgniter:
-          - Extending ColdIgniter: extending/index.md
+          - extending/index.md
           - Creating Core System Classes: extending/core_classes.md
           - Replacing Common Functions: extending/common.md
           - Events: extending/events.md
           - Extending the Controller: extending/basecontroller.md
           - Authentication: extending/authentication.md
           - Contributing to ColdIgniter: extending/contributing.md
-  - Change logs:
-      - Change logs: changelogs/index.md
+  - License Agreement: license.md
+  - Change logs: changelogs/index.md

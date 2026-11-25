@@ -47,3 +47,13 @@ CI_ENVIRONMENT = development
 ```
 
 In `development`, errors are shown in detail and the debug toolbar is on. Use `production` for a live site.
+
+## In this section
+
+- [Manual Installation](installing_manual.md)
+- [Running Your App](running.md)
+- [Several servers](several_servers.md)
+- [Troubleshooting](troubleshooting.md)
+- [Deployment](deployment.md)
+- [Upgrading From a Previous Version](upgrading.md)
+- [ColdIgniter Repositories](repositories.md)

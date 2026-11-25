@@ -57,7 +57,7 @@ A page that is not written yet is a stub: the title, one sentence and the note "
 ## A new page
 
 1. Add a Markdown file in `guide/`.
-2. Add it to `nav` in `mkdocs.yml`.
+2. Add it to `nav` in `mkdocs.yml`. The `index.md` of a folder goes first in its section, without a title: the section title in the menu then opens that page. List the pages of the folder under "In this section" in that `index.md`.
 3. For a new folder with an `index.md`, add the two lines to `dist/_redirects`.
 
 ## License
