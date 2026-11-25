@@ -190,7 +190,7 @@ For example, say you have a URI like this:
 http://example.com/products/shoes/sandals/123
 ```
 
-Your method is passed URI segments 3 and 4 (`"sandals"` and `"123"`):
+Your method is passed URI segments 3 and 4 (`"sandals"` and `"123"`), with the component below as `app/Controllers/Products.cfc`:
 
 ```cfm
 <cfcomponent output="no" extends="BaseController">

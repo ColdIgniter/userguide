@@ -1,9 +1,8 @@
 # Helpers
 
-A list of the helper files.
+Helpers are collections of useful functions. Each helper file holds the functions for one kind of work.
 
-!!! note "Not written yet"
-    This page is not written yet.
+See also [Helper Functions](../general/helpers.md), which shows how to load a helper and how to write your own.
 
 ## In this section
 

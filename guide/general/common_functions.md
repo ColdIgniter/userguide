@@ -315,7 +315,7 @@ If the route has a `{locale}` placeholder, the locale can be given as the last p
 ```
 
 !!! important
-    `route_to()` returns a route path, not a full URI. It is relative to the base URL. To get a full URI, use `url_to()` of the URL Helper (its page is not written yet).
+    `route_to()` returns a route path, not a full URI. It is relative to the base URL. To get a full URI, use [`url_to()`](../helpers/url_helper.md#url_to) of the URL Helper.
 
 See [Reverse Routing](../incoming/routing.md#reverse-routing) and [Named Routes](../incoming/routing.md#named-routes).
 
