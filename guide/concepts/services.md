@@ -44,10 +44,10 @@ The `timer` is an instance of the Timer class, and if you call `service("timer")
 
 The Services typically return a **shared instance** of the class. A second call with other parameters returns the same instance, and the new parameters are ignored.
 
-The services that exist are: `autoloader`, `cache`, `coldigniter`, `csp`, `encrypter`, `exceptions`, `filters`, `format`, `honeypot`, `incomingrequest`, `language`, `logger`, `migrations`, `negotiator`, `pager`, `parser`, `redirectresponse`, `renderer`, `request`, `response`, `responsecache`, `router`, `routes`, `security`, `session`, `siteurifactory`, `superglobals`, `timer`, `toolbar`, `uri` and `validation`.
+The services that exist are: `autoloader`, `cache`, `coldigniter`, `csp`, `encrypter`, `exceptions`, `filters`, `format`, `honeypot`, `incomingrequest`, `language`, `logger`, `migrations`, `negotiator`, `pager`, `parser`, `redirectresponse`, `renderer`, `request`, `response`, `responsecache`, `router`, `routes`, `security`, `session`, `siteurifactory`, `superglobals`, `throttler`, `timer`, `toolbar`, `uri` and `validation`.
 
 !!! warning "Not ported yet"
-    Every service of CodeIgniter that is not in that list is not ported yet. The file `Config/Services.php` of CodeIgniter holds the full list (for example `curlrequest`, `email`, `image`, `throttler`, `typography`, `clirequest` and `locator`).
+    Every service of CodeIgniter that is not in that list is not ported yet. The file `Config/Services.php` of CodeIgniter holds the full list (for example `curlrequest`, `email`, `image`, `typography`, `clirequest` and `locator`).
 
 !!! note "Difference from CodeIgniter"
     A service name that does not exist gives an empty string. Service names are not case sensitive.

@@ -10,7 +10,7 @@ ColdIgniter provides a few functions and variables that are globally defined, an
 ### Service Accessors
 
 !!! warning "Not ported yet"
-    These functions do not exist: `cookie()`, `cookies()`, `model()`, `response()`, `timer()`, `view_cell()` and `single_service()`. Use `service("response")` and `service("timer")` for the shared instances, and `service("name")` for any other service. For a model, see [Factories](../concepts/factories.md).
+    These functions do not exist: `cookie()`, `cookies()`, `response()`, `timer()`, `view_cell()` and `single_service()`. Use `service("response")` and `service("timer")` for the shared instances, and `service("name")` for any other service. For a model, use `model()`.
 
 #### cache()
 
@@ -65,6 +65,12 @@ For more information, see [Localization](../outgoing/localization.md).
 
 !!! warning "Not ported yet"
     The formatting of the placeholders is not ported (it uses the intl extension in CodeIgniter).
+
+#### model()
+
+`model(name, getShared, conn)` is a simpler way of getting model instances from [Factories](../concepts/factories.md). `name` is the model class name, and `getShared` (default `true`) tells whether to return the shared instance. `conn` is an optional database connection that is passed to the constructor of the model. It returns an empty string when the class is not found.
+
+See [Factories](../concepts/factories.md#model) for details.
 
 #### old()
 

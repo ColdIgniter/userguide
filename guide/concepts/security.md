@@ -7,7 +7,7 @@ We respect the [Open Web Application Security Project (OWASP)](https://owasp.org
 The following comes from [OWASP Top Ten](https://owasp.org/www-project-top-10/) and [OWASP API Security Top 10](https://owasp.org/API-Security/editions/2023/en/0x11-t10/), identifying the top vulnerabilities for web applications and APIs. For each, we provide a brief description, the OWASP recommendations, and then the ColdIgniter provisions to address the problem. Only the features that exist in ColdIgniter are listed as provisions. A feature of CodeIgniter that is not ported is marked.
 
 !!! note "Difference from CodeIgniter"
-    CodeIgniter points to its Shield package for authentication and authorization, to the Throttler for rate limits, to `spark` commands and to PHPUnit. None of these exist in ColdIgniter. Authentication and authorization are written in your application, usually in a [filter](../incoming/filters.md).
+    CodeIgniter points to its Shield package for authentication and authorization, to `spark` commands and to PHPUnit. None of these exist in ColdIgniter. Authentication and authorization are written in your application, usually in a [filter](../incoming/filters.md).
 
 ## OWASP Top 10 2021
 
@@ -47,9 +47,7 @@ Access control is only effective in trusted server-side code, where the attacker
 - [Sessions](../libraries/sessions.md) library
 - [CORS](../libraries/cors.md) filter
 - `log_message()` function for logging
-
-!!! warning "Not ported yet"
-    The Throttler for rate limits (`Throttle/Throttler.php` in CodeIgniter) is not ported.
+- [Throttler](../libraries/throttler.md) for rate limit
 
 ### A02:2021 Cryptographic Failures
 
@@ -145,8 +143,10 @@ Insecure design is a broad category representing different weaknesses, expressed
 
 - The framework gives you the building blocks of a secure design (filters, validation, the Security library), but ColdIgniter has no testing library of its own yet.
 
+- [Throttler](../libraries/throttler.md) for rate limit
+
 !!! warning "Not ported yet"
-    The testing support of CodeIgniter (`Test/` in CodeIgniter) is mostly not ported, and the Throttler for rate limits is not ported.
+    The testing support of CodeIgniter (`Test/` in CodeIgniter) is mostly not ported.
 
 ### A05:2021 Security Misconfiguration
 
@@ -340,9 +340,10 @@ Authentication mechanisms are often implemented incorrectly, allowing attackers 
 #### ColdIgniter provisions
 
 - [Filters](../incoming/filters.md)
+- [Throttler](../libraries/throttler.md) for rate limit
 
 !!! warning "Not ported yet"
-    The `spark routes` command has no counterpart, and the Throttler for rate limits (`Throttle/Throttler.php`) is not ported.
+    The `spark routes` command has no counterpart.
 
 ### API3:2023 Broken Object Property Level Authorization
 
@@ -378,9 +379,7 @@ Satisfying API requests requires resources such as network bandwidth, CPU, memor
 #### ColdIgniter provisions
 
 - [Validation](../libraries/validation.md) library
-
-!!! warning "Not ported yet"
-    The Throttler for rate limits (`Throttle/Throttler.php`) is not ported.
+- [Throttler](../libraries/throttler.md) for rate limit
 
 ### API5:2023 Broken Function Level Authorization
 
