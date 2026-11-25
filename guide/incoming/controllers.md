@@ -91,7 +91,7 @@ If you set `this.helpers` in `BaseController`, set it before the call to `parent
 ## forceHTTPS
 
 !!! warning "Not ported yet"
-    The `forceHTTPS()` method does not exist yet.
+    The `forceHTTPS()` method does not exist yet. The property `this.forceHTTPS` exists, but it has no effect.
 
 ## Validating Data
 
@@ -132,7 +132,7 @@ The [Validation](../libraries/validation.md) page describes the formats of rules
 The controller also has `validate()`. It takes the rules and, optionally, custom messages. It reads the data to check from `this.request_`.
 
 !!! warning
-    `validate()` reads its data with `getVar()`, which reads the values in the order of the setting `request_order` (default `GP`, the form and URL values), or the JSON body. An attacker could change what is checked. Use `validateData()` to check form data only.
+    `validate()` reads its data with `getVar()`, which reads the values in the order of the setting `request_order` (default `GP`, the form and URL values). For PUT, PATCH and DELETE requests that are not multipart it reads the raw input instead. A JSON request throws an error. An attacker could change what is checked. Use `validateData()` to check form data only.
 
 Use `this.validator.getValidated()` to get the validated data after `validate()`.
 
