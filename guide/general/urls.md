@@ -70,13 +70,7 @@ The permitted characters can be changed by the property `permittedURIChars` of `
 <cfset this.permittedURIChars = "a-z 0-9~%.:_\-">
 ```
 
-The value is the inside of a character class of a Java regular expression, tested without regard to case. If you want to use Unicode for URI paths, modify it to allow the characters to be used. A range is written with `\uhhhh`, where `hhhh` is the code of the character. For example, to allow the Bengali block (U+0980 to U+09FF), set the value in **app/Config/App.cfc**:
-
-```cfm
-<cfset this.permittedURIChars = "a-z 0-9~%.:_\-ঀ-৿">
-```
-
-A full list of Unicode ranges can be found at Wikipedia's [Unicode block](https://en.wikipedia.org/wiki/Unicode_block) page.
+The value is the inside of a character class of a Java regular expression, tested without regard to case. If you want to allow other characters in URI paths, add them to the value in **app/Config/App.cfc**.
 
 ## Removing the index.cfm file
 

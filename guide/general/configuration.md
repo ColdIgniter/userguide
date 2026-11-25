@@ -23,7 +23,7 @@ You can get the configuration object of a class in several ways.
 ColdFusion MX 6.1 has no `new` keyword. Create an instance with `new_()`:
 
 ```cfm
-<cfset config = new_("Config\App")>
+<cfset appConfig = new_("Config\App")>
 ```
 
 !!! note "Difference from CodeIgniter"
@@ -34,8 +34,8 @@ ColdFusion MX 6.1 has no `new` keyword. Create an instance with `new_()`:
 By using the `config()` function:
 
 ```cfm
-<cfset config = config("Config\App")>
-<cfset config = config("App")>
+<cfset appConfig = config("Config\App")>
+<cfset appConfig = config("App")>
 ```
 
 `config()` returns the same object each time you ask for the same class (the objects are kept by [Factories](../concepts/factories.md)). Pass `false` as the second argument to get a new object. A name without a namespace is looked for in the `Config` namespace, so both lines above return the same object.
@@ -45,8 +45,8 @@ By using the `config()` function:
 All configuration object properties are public, so you access the settings like any other property:
 
 ```cfm
-<cfset config = config("Config\App")>
-<cfset baseURL = config.baseURL>
+<cfset appConfig = config("Config\App")>
+<cfset baseURL = appConfig.baseURL>
 ```
 
 ## Creating Configuration Files
@@ -142,7 +142,6 @@ address.city = "Berlin"
 address.country = "Germany"
 frontend.db = sales
 backend.db = admin
-BackEnd.db = admin
 ```
 
 #### Namespace Separator
@@ -187,7 +186,7 @@ app_CSPEnabled = true
 ```
 
 !!! note "Difference from CodeIgniter"
-    Prefixes and property names are not case-sensitive in ColdIgniter. A value of `true` or `false` becomes a boolean. When the property in the configuration file is a number, the value is turned into a number.
+    Prefixes and property names are not case-sensitive in ColdIgniter. The lowercase words `true` and `false` become booleans. When the property in the configuration file is a number, the value is turned into a number.
 
 ### Environment Variables as Replacements for Data
 
@@ -227,14 +226,6 @@ If this was referring to a `SimpleConfig` configuration object with a property `
 
 Any other elements of the `address` property are unchanged. An element of an array property is named by its number, starting at 0, such as `Config\SimpleConfig.list.0 = first`.
 
-You can also use the array property name as a prefix. If the environment file held the following then the result would be the same as above.
-
-```ini
-# array namespaced variables
-Config\SimpleConfig.address.city = "Berlin"
-address.country = "Germany"
-```
-
 ## Handling Different Environments
 
 Configuring multiple environments is easily accomplished by using a separate **.env** file with values modified to meet that environment's needs.
@@ -248,7 +239,7 @@ Do not track **.env** files with your version control system. If you do, and the
 ## Registrars
 
 !!! warning "Not ported yet"
-    Registrars (`registrars` of `Config/BaseConfig.php`, and the file **Config/Registrar.php** of a namespace) are not ported. Implicit and explicit registrars do not change any configuration object.
+    Registrars (the `registrars` property of the base config class of CodeIgniter, and the registrar file of a namespace) are not ported. Implicit and explicit registrars do not change any configuration object.
 
 ### Implicit Registrars
 

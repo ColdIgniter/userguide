@@ -115,13 +115,15 @@ No special change is needed when working with configuration files. These are sti
 <cfset blogConfig = new_("Acme\Blog\Config\Blog")>
 ```
 
-!!! warning "Not ported yet"
-    Finding a config file of a module by its short class name with `config()` is not described here, as it was not verified. Pass the full class name.
+The `config()` function looks a short class name up in the `Config` namespace only, so pass the full class name for a config file of a module:
+
+```cfm
+<cfset blogConfig = config("Acme\Blog\Config\Blog")>
+```
 
 ### Migrations
 
-!!! warning "Not ported yet"
-    Migrations in a module are not described here, as it was not verified that they are found in a namespace. See [Database Migrations](../dbmgmt/migration.md).
+Migration files are found in the **Database/Migrations** folder of every folder of a namespace. By default the migration runner uses the namespace `App`. Call `setNamespace("Acme\Blog")` on it to use the module, or `setNamespace("")` to use all namespaces. Only that folder is searched, not the folders below it. See [Database Migrations](../dbmgmt/migration.md).
 
 ### Seeds
 
@@ -134,8 +136,7 @@ A helper of a module is not found by `helper()`, which looks in **app/Helpers** 
 
 ### Language Files
 
-!!! warning "Not ported yet"
-    Finding a language file in a namespace is not described here, as it was not verified. Put the file in **app/Language**. See [Localization](../outgoing/localization.md).
+Language files are searched in the **Language/{locale}** folder of every namespace that the autoloader knows, as long as the file follows the same directory structure as the main application directory. See [Localization](../outgoing/localization.md).
 
 ### Libraries
 

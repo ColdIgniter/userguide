@@ -2,7 +2,7 @@
 
 ## What are Helpers?
 
-Helpers, as the name suggests, help you with tasks. Each helper file is simply a collection of functions in a particular category. There are [URL Helpers](../helpers/url_helper.md), that assist in creating links, there are [Form Helpers](../helpers/form_helper.md) that help you create form elements, [Text Helpers](../helpers/text_helper.md) perform various text formatting routines, [Cookie Helpers](../helpers/cookie_helper.md) set and read cookies, [Filesystem Helpers](../helpers/filesystem_helper.md) help you deal with files, etc.
+Helpers, as the name suggests, help you with tasks. Each helper file is simply a collection of functions in a particular category. There are [URL Helpers](../helpers/url_helper.md), that assist in creating links, there are [Form Helpers](../helpers/form_helper.md) that help you create form elements, [Text Helpers](../helpers/text_helper.md) perform various text formatting routines, [Cookie Helpers](../helpers/cookie_helper.md) set and read cookies, [Array Helpers](../helpers/array_helper.md) help you work with arrays, [HTML Helpers](../helpers/html_helper.md) build HTML tags, etc.
 
 Unlike most other systems in ColdIgniter, Helpers are not written in an Object Oriented format. They are simple, procedural functions. Each helper function performs one specific task, with no dependence on other functions.
 
@@ -58,7 +58,7 @@ A function name that is already defined is kept: the helper functions have no gu
 If you need to load more than one helper at a time, you can pass an array of file names in and all of them will be loaded:
 
 ```cfm
-<cfset helper(ListToArray("cookie,date"))>
+<cfset helper(ListToArray("cookie,text"))>
 ```
 
 ### Loading in a Controller

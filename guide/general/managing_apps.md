@@ -49,7 +49,7 @@ This would have two apps, **blog** and **shop**, both having standard applicatio
 The `systemDirectory` property in **app/Config/Paths.cfc** inside each of those would be set to refer to the shared common **system** folder:
 
 ```cfm
-<cfset this.systemDirectory = __DIR__ & "/../../system">
+<cfset this.systemDirectory = __DIR__ & "/../../../system">
 ```
 
 Only when you change the Application Directory, see [Renaming or Relocating the Application Directory](#renaming-or-relocating-the-application-directory) and modify the path in the **index.cfm**.

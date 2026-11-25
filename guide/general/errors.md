@@ -106,7 +106,7 @@ To ignore logging on other status codes, you can set the status code to ignore i
 ### Logging Deprecation Warnings
 
 !!! warning "Not ported yet"
-    ColdFusion MX 6.1 has no deprecation errors and no error levels, so the logging of deprecation warnings (`logDeprecations` and `deprecationLogLevel` of **Config/Exceptions.php** in CodeIgniter) has no effect, and the environment variable `CODEIGNITER_SCREAM_DEPRECATIONS` is not read.
+    ColdFusion MX 6.1 has no deprecation errors and no error levels, so the logging of deprecation warnings (the settings `logDeprecations` and `deprecationLogLevel` of the Exceptions config of CodeIgniter) has no effect, and the environment variable `CODEIGNITER_SCREAM_DEPRECATIONS` is not read.
 
 #### Configuration
 
@@ -168,7 +168,7 @@ Its `getExitCode()` returns 8.
 #### RedirectException
 
 !!! warning "Not ported yet"
-    `ColdIgniter.HTTP.Exceptions.RedirectException` can be thrown, but it cannot carry a URI or a response, and the framework does not catch it. To redirect, return the redirect response: see [HTTP Responses](../outgoing/response.md).
+    `ColdIgniter.HTTP.Exceptions.RedirectException` can be thrown, but it cannot carry a URI or a response, and only the `forcehttps` filter catches it. To redirect, return the redirect response: see [HTTP Responses](../outgoing/response.md).
 
 ## Specify HTTP Status Code in Your Exception
 
@@ -219,6 +219,7 @@ The first step is to create a new component which extends `ColdIgniter\Debug\Bas
 		<cfargument name="statusCode" type="numeric" required="yes">
 		<cfargument name="exitCode" type="numeric" required="yes">
 
+		<cfheader statuscode="#arguments.statusCode#">
 		<cfset arguments.response.setStatusCode(arguments.statusCode)>
 		<cfset request.ColdIgniter.output = "Something went wrong: " & esc(arguments.exception.message)>
 	</cffunction>
@@ -233,19 +234,19 @@ The built-in handler `ColdIgniter\Debug\ExceptionHandler` shows what a handler d
 
 ### Configuring the New Handler
 
-Telling ColdIgniter to use your new exception handler component is done in the **app/Config/Exceptions.cfc** configuration file's `handler()` function. It gets the status code and the error:
+Telling ColdIgniter to use your new exception handler component is done in the **app/Config/Exceptions.cfc** configuration file's `handler()` function. It gets the status code and the error. The status code is 500, or the `errorcode` of the four types listed above, so test the `type` of the error to pick a handler for a case of your own:
 
 ```cfm
 <cffunction name="handler" access="public" returntype="any" output="no">
 	<cfargument name="statusCode" type="numeric" required="yes">
 	<cfargument name="exception" type="any" required="yes">
 
-	<cfif arguments.statusCode EQ 503>
-		<cfreturn new_("App\Libraries\MaintenanceHandler", this)>
+	<cfif arguments.exception.type EQ "ColdIgniter.Database.Exceptions.DatabaseException">
+		<cfreturn new_("App\Libraries\DatabaseErrorHandler", this)>
 	</cfif>
 
 	<cfreturn new_("ColdIgniter\Debug\ExceptionHandler", this)>
 </cffunction>
 ```
 
-You can use any logic your application needs to determine whether it should handle the exception, but the two most common are checking on the HTTP status code or the type of the error (`arguments.exception.type`). If your component should handle it then return a new instance of it, with the config object as the argument.
+You can use any logic your application needs to determine whether it should handle the exception, but the most common is checking the type of the error (`arguments.exception.type`). If your component should handle it then return a new instance of it, with the config object as the argument.

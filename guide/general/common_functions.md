@@ -156,7 +156,10 @@ Returns a meta tag with the CSRF information already inserted. An optional argum
 
 #### force_https()
 
-`force_https(duration)` checks to see if the page is currently being accessed via HTTPS. If it is, then nothing happens. If it is not, then the user is redirected back to the current URI but through HTTPS. It sets the HTTP Strict Transport Security header, which instructs modern browsers to automatically modify any HTTP requests to HTTPS requests for `duration` seconds (default 31536000).
+`force_https(duration)` checks to see if the page is currently being accessed via HTTPS. If it is, then nothing happens. If it is not, it sets the HTTP Strict Transport Security header, which instructs modern browsers to automatically modify any HTTP requests to HTTPS requests for `duration` seconds (default 31536000), and builds a redirect to the same URI through HTTPS.
+
+!!! note "Difference from CodeIgniter"
+    The function does not send the redirect itself. It throws `ColdIgniter.HTTP.Exceptions.RedirectException`, which only the `forcehttps` filter catches. If you call `force_https()` directly from a controller, nobody catches the error and the visitor gets an error page (status 500). To force HTTPS, set `forceGlobalSecureRequests` in **app/Config/App.cfc** or apply the `forcehttps` filter. See [Controller Filters](../incoming/filters.md).
 
 #### log_message()
 
@@ -168,7 +171,16 @@ Context can be used to substitute values in the message string. For full details
 
 #### redirect()
 
-`redirect(route)` returns a redirect response object, allowing you to easily create redirects. The route is a route name or `Controller::method`. Without an argument, it returns the redirect response itself, for a call such as `redirect().to("/")`. See [HTTP Responses](../outgoing/response.md).
+`redirect()` returns a redirect response object, allowing you to easily create redirects. Call it without an argument and use `to()`:
+
+```cfm
+<cfreturn redirect().to("/")>
+```
+
+See [HTTP Responses](../outgoing/response.md).
+
+!!! warning "Not ported yet"
+    `redirect("name")` and `route()` of the redirect response need reverse routing, which is not ported, so they always throw an error. Use `redirect().to()` with a URI.
 
 #### remove_invisible_characters()
 
@@ -209,7 +221,7 @@ Returns the shared request object. This function is a wrapper for `service("requ
 <cfset attributes = StructNew()>
 <cfset attributes.class = "wide">
 <cfset attributes.id = "main">
-<cfoutput>&lt;div#stringify_attributes(attributes)#&gt;</cfoutput>
+<cfoutput><div#stringify_attributes(attributes)#></cfoutput>
 ```
 
 ## Global Constants
