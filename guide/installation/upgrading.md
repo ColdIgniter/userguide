@@ -21,4 +21,4 @@ For example, compare your `app/Config/App.cfc` with the one of the new download,
 
 ### From 4.0.0 to 4.1.0
 
-Version 4.1.0 is not released yet. It adds the html and text helpers and the config `ForeignCharacters`, and `Config\DocTypes` now decides whether `img()` and the other html tags close with ` /`. If your views call `img()` or the other html tags, check how they close after the upgrade.
+Version 4.1.0 is not released yet. 4.1.0 adds the html and text helpers; `Config\DocTypes` decides whether their tags close with ` /`. It also adds the config `ForeignCharacters`.

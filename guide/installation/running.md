@@ -66,7 +66,7 @@ A ColdIgniter site is hosted on a web server. The parts below describe IIS 4 on 
 
 URLs without `index.cfm` need a rewrite filter on the web server. The file `public/.htaccess` holds the rewrite rules for [URL Magic](https://github.com/muncherelli/urlmagic4), a rewrite filter for IIS that reads rules in the style of Apache. Install the filter in IIS for the site, and it reads that file. Without a rewrite filter the site still works: use addresses with `index.cfm`, such as `http://myproject.local/index.cfm/news`.
 
-The rules do three things: they remove a trailing slash with a redirect, they redirect `www.example.com` to `example.com`, and they send every request that is not for a real file or folder to `index.cfm`. If ColdIgniter is in a subfolder, set `RewriteBase` in the file to the subfolder.
+The rules do three things: they remove a trailing slash with a redirect, they redirect `www.example.com` to `example.com`, and they send every request that is not for a real file or folder to `index.cfm`. The file has a `RewriteBase` line, commented out, for an installation in a subfolder.
 
 #### Setting Document Root
 
@@ -78,7 +78,7 @@ Run each app as a web site of its own, with its own host name.
 
 #### Adding Host Alias
 
-Add a host name for the site to the DNS of your network, or on a development machine to the `hosts` file at `C:\WINNT\system32\drivers\etc\hosts`. Add a line such as this one, with a name of your choice:
+Add a host name for the site to the DNS of your network, or on a development machine to the `hosts` file at `%SystemRoot%\system32\drivers\etc\hosts` (`C:\WINNT` on a default installation). Add a line such as this one, with a name of your choice:
 
 ```text
 192.0.2.10 myproject.local
@@ -86,7 +86,7 @@ Add a host name for the site to the DNS of your network, or on a development mac
 
 #### Setting VirtualHost
 
-In the Internet Service Manager, add a web site for the project. Set its home directory to the `public/` folder of the project, for example `D:\Sites\myproject\public`, and give it the host name `myproject.local`. Make sure the folders are laid out like this:
+In the administration tool of IIS, add a web site for the project. Set its home directory to the `public/` folder of the project, for example `D:\Sites\myproject\public`, and give it the host name `myproject.local`. Make sure the folders are laid out like this:
 
 ```text
 D:\Sites\
@@ -105,7 +105,7 @@ With the settings above the site is at `http://myproject.local/` in your browser
 
 ### Hosting with Subfolder
 
-If you want a base URL such as `http://localhost/myproject/`, keep the project folder outside the home directory of the site and add a virtual directory named `myproject` to the site, with the `public/` folder of the project as its path. Then set `app.baseURL = 'http://localhost/myproject/'` in `.env`, and, for URL rewriting, set `RewriteBase /myproject` in `public/.htaccess`.
+If you want a base URL such as `http://localhost/myproject/`, keep the project folder outside the home directory of the site and add a virtual directory named `myproject` to the site, with the `public/` folder of the project as its path. Then set `app.baseURL = 'http://localhost/myproject/'` in `.env`.
 
 Do not put the project folder itself in a folder that the web server serves. The files of `app/`, `system/` and `writable/` and your `.env` file would then be reachable by visitors.
 
@@ -123,7 +123,7 @@ Set `CI_ENVIRONMENT` in the `.env` file next to the `app/` folder. See [Handling
 ## Hosting with Apache and nginx
 
 !!! warning "Not ported yet"
-    There is no description for these web servers. The file `public/.htaccess` has the rewrite rules in the syntax of Apache, but ColdIgniter is tested under IIS only.
+    There is no description for these web servers. The file `public/.htaccess` has the rewrite rules in the syntax of Apache, but it is described here for IIS only.
 
 ## Deployment to Shared Hosting Services
 

@@ -21,7 +21,7 @@ If no matter what you put in your URL only the default page loads, the web serve
 
 Make sure that the case of the folder and file names matches the code.
 
-Windows is not case sensitive, but other servers can be. For example, when you have `app/Controllers/Product.cfc`, you must use `Product` as the class name, not `product`.
+Windows is not case sensitive, but other servers can be. For example, when you have `app/Controllers/Product.cfc`, the controller is referred to as `Product`, matching the file name `Product.cfc`, not as `product`.
 
 If the case of a file name is wrong, the file is not found on such a server.
 

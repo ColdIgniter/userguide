@@ -15,7 +15,7 @@ No add-on, extension or custom tag is required.
 
 ## Optional Extensions
 
-ColdIgniter needs no optional extension. These parts of CodeIgniter 4 are not ported yet, so there is nothing to install for them: the CURLRequest class, the Image class (with its GD and ImageMagick handlers) and the Memcached and Redis cache handlers.
+ColdIgniter needs no optional extension. The Memcached and Redis cache handlers will not be ported; CURLRequest and Image are not ported yet.
 
 ## Supported Databases
 

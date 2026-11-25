@@ -56,10 +56,10 @@ example.com/ (for the application)
     writable/
 public_html/ (the default home directory)
     index.cfm
-    robots.txt
+    .htaccess
 ```
 
-Then change the `cfinclude` line in `index.cfm` that names `app/Config/Paths.cfm`, so it reaches the `app/` folder in its new place. The paths in `app/Config/Paths.cfc` are relative to the project root, so check them too.
+Then change the `cfinclude` line in `index.cfm` that names `app/Config/Paths.cfm`, so it reaches the `app/` folder in its new place. The paths in `app/Config/Paths.cfc` are relative to `app/Config`, so they need no change while `app/`, `system/` and `writable/` stay together.
 
 !!! note
     Put the `.env` file in the application directory, next to `app/`. The setting `envDirectory` in `app/Config/Paths.cfc` names its folder.

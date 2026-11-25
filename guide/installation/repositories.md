@@ -1,6 +1,6 @@
 # ColdIgniter Repositories
 
-## ColdIgniter organization
+## coldigniter organization
 
 The ColdIgniter project has its own [GitHub organization](https://github.com/ColdIgniter).
 
