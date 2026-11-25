@@ -159,7 +159,7 @@ Returns a meta tag with the CSRF information already inserted. An optional argum
 `force_https(duration)` checks to see if the page is currently being accessed via HTTPS. If it is, then nothing happens. If it is not, it sets the HTTP Strict Transport Security header, which instructs modern browsers to automatically modify any HTTP requests to HTTPS requests for `duration` seconds (default 31536000), and builds a redirect to the same URI through HTTPS.
 
 !!! note "Difference from CodeIgniter"
-    The function does not send the redirect itself. It throws `ColdIgniter.HTTP.Exceptions.RedirectException`, which only the `forcehttps` filter catches. If you call `force_https()` directly from a controller, nobody catches the error and the visitor gets an error page (status 500). To force HTTPS, set `forceGlobalSecureRequests` in **app/Config/App.cfc** or apply the `forcehttps` filter. See [Controller Filters](../incoming/filters.md).
+    The function does not send the redirect itself. It throws `ColdIgniter.HTTP.Exceptions.RedirectException`, which only the `forcehttps` filter catches. If you call `force_https()` directly from a controller, nobody catches the error and the visitor gets an error page (status 500). To force HTTPS, set `forceGlobalSecureRequests` to `true` in **app/Config/App.cfc**; the required `forcehttps` filter then sends the redirect. See [Controller Filters](../incoming/filters.md).
 
 #### log_message()
 
