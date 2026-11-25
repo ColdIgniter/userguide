@@ -1,0 +1,15 @@
+/* The blue of ColdIgniter. */
+:root,
+[data-md-color-scheme="slate"] {
+	--md-primary-fg-color: #3366cc;
+	--md-primary-fg-color--light: #5c85d6;
+	--md-primary-fg-color--dark: #2952a3;
+	--md-primary-bg-color: #ffffff;
+	--md-primary-bg-color--light: rgba(255, 255, 255, .7);
+	--md-accent-fg-color: #2952a3;
+}
+
+[data-md-color-scheme="slate"] {
+	--md-accent-fg-color: #85a3e0;
+	--md-typeset-a-color: #85a3e0;
+}

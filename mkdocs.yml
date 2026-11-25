@@ -1,0 +1,60 @@
+site_name: ColdIgniter User Guide
+site_description: The user guide of ColdIgniter, a CFML port of CodeIgniter 4.
+site_url: https://coldigniter.dev/user_guide/
+repo_url: https://github.com/ColdIgniter/userguide
+repo_name: ColdIgniter/userguide
+edit_uri: edit/trunk/guide/
+
+# The pages are in guide/. The site is built into dist/user_guide/ so that
+# the files have the same path as their address: /user_guide/...
+docs_dir: guide
+site_dir: dist/user_guide
+strict: true
+
+theme:
+  name: material
+  # No request to another host: no web fonts.
+  font: false
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Dark colours
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Light colours
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - content.code.copy
+    - search.highlight
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+nav:
+  - Welcome: index.md
+  - Introduction:
+      - Server requirements: intro/requirements.md
+  - Installation:
+      - Installation: installation/index.md
+      - Several servers: installation/several_servers.md
+  - General topics:
+      - Controllers: general/controllers.md

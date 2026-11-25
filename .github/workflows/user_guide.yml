@@ -1,0 +1,35 @@
+name: user guide
+
+on:
+  push:
+    branches: [trunk]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install the generator
+        run: pip install -r requirements.txt
+      - name: Build the user guide
+        run: zensical build --clean
+      - name: Check that the pages exist
+        run: |
+          test -f dist/user_guide/index.html
+          test -f dist/user_guide/404.html
+      # Only on trunk, and only when the repository says so.
+      - name: Deploy to Cloudflare
+        if: github.ref == 'refs/heads/trunk' && github.event_name != 'pull_request' && vars.USER_GUIDE_DEPLOY == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy

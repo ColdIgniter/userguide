@@ -1,0 +1,21 @@
+// The user guide is a Cloudflare Worker with static assets only: there is
+// no script. dist/ holds the folder user_guide/, so a file has the same
+// path as its address: https://coldigniter.dev/user_guide/...
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "coldigniter-user-guide",
+	"compatibility_date": "2026-11-01",
+	"assets": {
+		"directory": "./dist",
+		"html_handling": "auto-trailing-slash",
+		"not_found_handling": "404-page"
+	},
+	// Also served at <name>.<account>.workers.dev/user_guide/ for tests.
+	"workers_dev": true,
+	// Only /user_guide of the domain goes to this Worker. Every other
+	// address of coldigniter.dev stays with the main site.
+	"routes": [
+		{ "pattern": "coldigniter.dev/user_guide", "zone_name": "coldigniter.dev" },
+		{ "pattern": "coldigniter.dev/user_guide/*", "zone_name": "coldigniter.dev" }
+	]
+}
