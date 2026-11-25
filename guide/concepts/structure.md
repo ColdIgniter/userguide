@@ -60,12 +60,11 @@ The directory holds one folder for each area of the framework (**Cache**, **Data
 
 The **public** folder holds the browser-accessible portion of your web application, preventing direct access to your source code.
 
-It contains **index.cfm**, the front controller, and any application assets that you add, like CSS, javascript, or images.
+It contains the main **.htaccess** file, **index.cfm**, and any application assets that you add, like CSS, javascript, or images.
 
 This folder is meant to be the "web root" of your site, and your web server would be configured to point to it.
 
-!!! note "Difference from CodeIgniter"
-    The framework does not ship a **.htaccess** file in **public**. Setting up the web server so that addresses reach **index.cfm** is part of the installation, see [Installation](../installation/index.md).
+The **.htaccess** file holds the rewrite rules that remove **index.cfm** from the address. IIS reads it only when a rewrite filter is installed, see [Running Your App](../installation/running.md).
 
 ### writable
 
