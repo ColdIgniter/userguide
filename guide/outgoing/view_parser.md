@@ -120,7 +120,7 @@ The `render()` method takes a struct of options as its second argument, and `sav
 ## Substitution Variations
 
 There are two types of substitution supported: simple and looping.
-Substitutions are performed in the same sequence that pseudo-variables were added: the order of the keys of the data. With `render()`, `setVar()` and `setData()` that is the order in which you added them. With `parse()` and a struct made by `StructNew()`, the order of the keys is not fixed.
+Substitutions are performed in the same sequence that pseudo-variables were added: the order of the keys of the data. `setVar()` calls and separate `setData()` calls keep the order in which you make them. The keys inside one `StructNew()` struct, whether passed to `setData()` or to `parse()`, have no fixed order. Use `setVar()` or one `setData()` call per key when a pair must come after another key. Setting a key again keeps its first position.
 
 The **simple substitution** performed by the parser is a one-to-one
 replacement of pseudo-variables where the corresponding data parameter
@@ -137,7 +137,7 @@ has a simple value (a string or a number), as in this example:
 Substitution values are treated as data, not as template code. A value is not read as a condition,
 and `{noparse}` blocks are never parsed. There is one exception: the text that a variable pair makes is read again,
 for the pairs of the data keys that come later and for single substitutions. So a `{x}` inside the value of a row is replaced
-by the value `x` of the template data, and a `{list}...{/list}` inside it is looped if `list` is a list that comes later in the data. A row value that is itself a list or a struct is left in place by the single substitution, so the outer data can fill it.
+by the value `x` of the template data, and a `{list}...{/list}` inside it is looped if `list` is a list that comes later in the data. A single `{k}` whose row value is a list or a struct is left in place by the single substitution, so the outer data can fill it.
 Remove or encode the braces of a value in a row if it can come from a user.
 
 The `Parser` takes substitution a lot further with "variable pairs",
