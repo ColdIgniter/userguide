@@ -1,0 +1,7 @@
+# Pages are served at the address of their file (html_handling is "none"
+# in wrangler.jsonc), so a folder address has to be sent to its index.html.
+# Add two lines here for every new folder of guide/ that has an index.md.
+/user_guide /user_guide/index.html 302
+/user_guide/ /user_guide/index.html 302
+/user_guide/installation /user_guide/installation/index.html 302
+/user_guide/installation/ /user_guide/installation/index.html 302
