@@ -49,7 +49,7 @@ This directory stores the files that make up the framework, itself. While you ha
 
 All files in this directory live under the `ColdIgniter` namespace.
 
-The directory holds one folder for each area of the framework (**Cache**, **Database**, **Filters**, **HTTP**, **Router**, **Session**, **Validation**, **View** and so on). Next to them are **Polyfills**, a folder of small functions that stand in for the PHP functions the original code calls, and **Common.cfm**, the global functions such as `service()` and `esc()`.
+The directory holds one folder for each area of the framework (**Cache**, **Database**, **Filters**, **HTTP**, **Router**, **Session**, **Validation**, **View** and so on). Next to them are **Polyfills**, a folder of small functions that stand in for the functions of the original code that CFML lacks, and **Common.cfm**, the global functions such as `service()` and `esc()`.
 
 !!! note "Difference from CodeIgniter"
     There is no Composer, so the framework is never in a **vendor** folder. The **system** folder is always next to **app**.
