@@ -31,19 +31,19 @@ zensical serve
 To run it as the Worker does:
 
 ```sh
-npx wrangler dev
+npx wrangler@4 dev
 ```
 
 Then open `http://localhost:8787/user_guide/`.
 
 ## Deploy
 
-The workflow `.github/workflows/user_guide.yml` builds the guide for every pull request. On `trunk` it also deploys, when the repository variable `USER_GUIDE_DEPLOY` is `true` and the secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are set.
+The workflow `.github/workflows/user_guide.yml` builds the guide for every pull request. On `trunk` a second job also deploys, when the repository variable `USER_GUIDE_DEPLOY` is `true`. That job runs in the GitHub environment `cloudflare`, which holds the secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
 
 By hand:
 
 ```sh
-npx wrangler deploy
+npx wrangler@4 deploy
 ```
 
 ## A new page

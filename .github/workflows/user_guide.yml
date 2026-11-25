@@ -9,12 +9,19 @@ on:
 permissions:
   contents: read
 
+# One run for a branch at a time. A deploy is never cancelled half way.
+concurrency:
+  group: user-guide-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/trunk' }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: "3.13"
       - name: Install the generator
@@ -25,11 +32,32 @@ jobs:
         run: |
           test -f dist/user_guide/index.html
           test -f dist/user_guide/404.html
-      # Only on trunk, and only when the repository says so.
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: user-guide
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
+
+  # Only on trunk, and only when the repository says so. The secrets are
+  # in the environment "cloudflare", so no other job can read them.
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/trunk' && github.event_name != 'pull_request' && vars.USER_GUIDE_DEPLOY == 'true'
+    runs-on: ubuntu-latest
+    environment: cloudflare
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: user-guide
+          path: dist/
       - name: Deploy to Cloudflare
-        if: github.ref == 'refs/heads/trunk' && github.event_name != 'pull_request' && vars.USER_GUIDE_DEPLOY == 'true'
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: "4.168.0"
           command: deploy

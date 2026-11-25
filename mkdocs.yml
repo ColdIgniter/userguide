@@ -1,9 +1,8 @@
 site_name: ColdIgniter User Guide
 site_description: The user guide of ColdIgniter, a CFML port of CodeIgniter 4.
 site_url: https://coldigniter.dev/user_guide/
-repo_url: https://github.com/ColdIgniter/userguide
-repo_name: ColdIgniter/userguide
-edit_uri: edit/trunk/guide/
+# No repo_url: with it the theme asks api.github.com for the star count
+# from the browser of every visitor. The welcome page links the repositories.
 
 # The pages are in guide/. The site is built into dist/user_guide/ so that
 # the files have the same path as their address: /user_guide/...
