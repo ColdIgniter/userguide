@@ -91,6 +91,7 @@ nav:
           - Autoloading Files: concepts/autoloader.md
           - Services: concepts/services.md
           - Factories: concepts/factories.md
+          - Working with HTTP Requests: concepts/http.md
           - Security Guidelines: concepts/security.md
           - Design and Architectural Goals: concepts/goals.md
       - General Topics:
