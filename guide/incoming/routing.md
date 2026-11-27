@@ -152,8 +152,17 @@ These placeholders are available:
 | `(:alphanum)` | Matches any string of letters or digits, or both. |
 | `(:hash)` | The same as `(:segment)`. Use it to see which routes use hashed IDs. |
 
+`{locale}` matches one segment (any characters except a slash) and is also the way to detect the locale from the URI. When a route with `{locale}` matches, the matched segment is stored. The framework then sets it as the locale of the request (`setLocale_()`) before the controller runs. If `useSupportedLocalesOnly()` was switched on in the route collection, a locale that is not in `supportedLocales` of **app/Config/App.cfc** makes the router throw a `PageNotFoundException`. By default the flag is off. The helper `route_to()` and the reverse routing fill `{locale}` with the locale of the request, or with an extra last argument.
+
+```cfm
+<cfset routes.get("{locale}/books", "Books::index")>
+```
+
+!!! note "Difference from CodeIgniter"
+    The locale is found by the number of the group, not by a named group, because Java 1.4.2 has no named groups. A `(` inside a character class such as `[(]`, before `{locale}` in the same route, is counted as a group and gives a wrong locale.
+
 !!! warning "Not ported yet"
-    The `{locale}` part of a route, which detects the locale from the URI, is not ported.
+    `group()` is not ported, so a `{locale}` prefix for a group of routes cannot be written. Put `{locale}` in each route.
 
 ##### The Behavior of (:any)
 
